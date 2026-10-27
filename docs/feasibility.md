@@ -7,6 +7,7 @@
 | 事实 | 证据 | 能支持的结论 | 不能推导的结论 |
 | --- | --- | --- | --- |
 | 仓库只有初始 README | 本地提交 `971ba8df038f14445318740d47d7316eded7dba9` 的文件清单 | 项目从文档和技术验证开始 | 已经有可安装的软件 |
+| 用户设备为 KPW5，已安装 KUAL | 用户在本次对话中的补充 | 首轮验证以 Kindle Paperwhite 5 和现有 KUAL 环境为对象 | 固件版本已知、KOReader 已安装或项目书架入口已验证 |
 | KOReader 面向墨水屏，支持 Kindle、中文排版相关设置和插件 | [上游 README](https://github.com/koreader/koreader/blob/f0db5fcb3c3e35949a99c8bff3dc36837a3f0fd6/README.md) | 可以作为候选阅读宿主 | 所有 Kindle 固件均兼容；已有起点插件 |
 | KOReader 有插件注册菜单示例 | [hello 插件](https://github.com/koreader/koreader/blob/f0db5fcb3c3e35949a99c8bff3dc36837a3f0fd6/plugins/hello.koplugin/main.lua) | 插件能扩展界面；示例本身默认禁用 | 存在从系统书架直接打开任意插件的标准参数 |
 | 上游已有网络内容转 EPUB 的插件 | [newsdownloader](https://github.com/koreader/koreader/blob/f0db5fcb3c3e35949a99c8bff3dc36837a3f0fd6/plugins/newsdownloader.koplugin/main.lua) | 值得复用/参考宿主的网络与阅读桥接能力 | RSS 方案可以直接获取起点正文或登录会话 |
@@ -14,7 +15,7 @@
 | KPVBooklet 已归档，明确不支持当前固件 | [项目 README](https://github.com/koreader/kpvbooklet/blob/6da076271c53babb7dc1ff6b34c33cbdfbf96fac/README.md) | 不能把老教程作为现代设备原生入口的证明 | 所有现代设备都无法实现任何书架入口 |
 | KOReader 使用 AGPL-3.0 许可证文本 | [COPYING](https://github.com/koreader/koreader/blob/f0db5fcb3c3e35949a99c8bff3dc36837a3f0fd6/COPYING) | 后续复用及分发时必须核对许可要求 | 项目自身的许可证已经确定 |
 
-资料于上述日期查阅；表中以当时查询到的提交固定引用，供复核，不代表版本选型。未安装 KOReader，未连接真实 Kindle，未请求起点章节或测试账号登录。没有核实可供本项目使用的起点官方开放 API，也不据此断言此类 API 不存在。
+资料于上述日期查阅；表中以当时查询到的提交固定引用，供复核，不代表版本选型。本项目尚未执行 KOReader 安装，用户设备上的 KOReader 安装状态未知；未连接真实 Kindle，未请求起点章节或测试账号登录。没有核实可供本项目使用的起点官方开放 API，也不据此断言此类 API 不存在。
 
 KPVBooklet 的说明推荐 KUAL 或 [KOL / KUAL_Booklet](https://github.com/yparitcher/KUAL_Booklet)。本轮已确认后者仓库可读取，但未确认其对目标固件、项目专属书架项和直达插件的支持，不能据链接就填写兼容性“通过”。
 
@@ -22,7 +23,7 @@ KPVBooklet 的说明推荐 KUAL 或 [KOL / KUAL_Booklet](https://github.com/ypar
 
 **目标**：把“像书架里的 app”转换为可重现的真机结果。
 
-前置资料：准确型号、完整固件版本、现有越狱与启动工具版本、KOReader 安装状态。无需收集完整序列号。
+已知前置资料：KPW5，已安装 KUAL。仍需补齐完整固件版本、现有越狱与 KUAL 版本、KOReader 安装状态。无需收集完整序列号。
 
 验证步骤：
 
@@ -65,13 +66,14 @@ KPVBooklet 的说明推荐 KUAL 或 [KOL / KUAL_Booklet](https://github.com/ypar
 
 ## 5. 兼容性记录模板
 
-以下是待填模板，不是支持列表。只为实际测试过的组合新增“通过”记录。
+以下记录包含用户已确认的信息，其余项待补齐；不是已验证的支持列表。只为实际测试过的组合新增“通过”记录。
 
 | 项目 | 当前值 |
 | --- | --- |
-| 型号 / 完整固件 | 待用户提供 |
-| 越狱与启动工具 / 版本 | 待检查 |
-| CPU 架构 / KOReader 构建与版本 | 待实机确认 |
+| 型号 | KPW5（Kindle Paperwhite 5），用户确认 |
+| 完整固件版本 | 待用户提供 |
+| 越狱与启动工具 / 版本 | 已安装 KUAL，用户确认；KUAL 版本与越狱方式待检查 |
+| CPU 架构 / KOReader 安装状态、构建与版本 | 待实机确认；不从已安装 KUAL 推断已安装 KOReader |
 | 原生书架入口、直达插件、退出恢复 | 未执行 |
 | 免费正文、登录、已购正文 | 未执行，分别记录 |
 | 缓存许可与离线阅读 | 未执行 |
