@@ -2,6 +2,8 @@
 
 日期：2026-10-27。本文明确区分已查阅资料、设计建议和未执行验证。目标为 KPW5、Vera 越狱上的起点、长佩与 MiuRead 三个原生书架应用，均不依赖 KOReader。MiuRead 独立化及微信读书功能是正式交付项。
 
+实现进展补充：已采用 Mesquite + 静态 ARM helper 开始 M1，见 [实现与验证状态](implementation-status.md)。下面的资料调查与验收方法继续适用；“初始 README”指项目起点，不是当前文件清单。
+
 ## 1. 目前掌握的证据
 
 | 事实 | 证据 | 能支持的结论 | 不能推导的结论 |
@@ -14,9 +16,9 @@
 | 公开 MiuRead 入口加载 `ui/uimanager`、`device`、`ffi/blitbuffer`、`libs/libkoreader-lfs` 等模块 | [main.lua](https://github.com/miumiupy98-art/miuread-koreader/blob/581f9b660097aa42fe33170098346862cf0a9bbf/miuread.koplugin/main.lua) | 依赖不仅是显示一个 KOReader 菜单；隐藏界面不等于独立运行 | 简单改安装路径即可移除运行时依赖 |
 | 其元数据自称 `Independent WeRead client for KOReader` | [_meta.lua](https://github.com/miumiupy98-art/miuread-koreader/blob/581f9b660097aa42fe33170098346862cf0a9bbf/miuread.koplugin/_meta.lua) | “Independent”不能脱离“for KOReader”解释 | 是不依赖 KOReader 的独立引擎或起点客户端 |
 | KPM 描述安装、启动、卸载钩子，要求应用管理自己的 scriptlet | [KPM README](https://github.com/KindleModding/KPM/blob/4800e09412ceee6cc85ca924dc13fb27ba867d9b/README.md) | 可进一步调查目标环境的应用打包与启动方式 | 用户已安装 KPM；已掌握书架注册接口；其版本兼容用户固件 |
-| 公开 MiuRead 声明 AGPL-3.0-only | 上述 MiuRead README 的 Origin and License | 若复用其代码须核对许可及依赖 | 此项目已被选为运行基础，或项目自己的许可已经确定 |
+| 公开 MiuRead 声明 AGPL-3.0-only | 上述 MiuRead README 的 Origin and License；本次已核对完整 LICENSE | 本轮移植采用 AGPL-3.0-only，源码及归属随包分发 | 全部上游功能和第三方原生库已被移植 |
 
-资料于上述日期查阅，引用固定到当时查询的提交，供复核，不代表版本选型。没有安装或执行上游软件，未连接真实 Kindle，未请求起点、长佩或微信读书正文、测试账号登录。没有核实本项目可用的官方内容接口，不据此断言此类接口不存在。
+资料于上述日期查阅，引用固定到提交供复核。MiuRead 首批移植已固定此提交；没有安装或执行上游软件，未连接真实 Kindle。尝试只读访问三个平台时，代理 CONNECT 被策略拒绝；没有获取真实正文或完成真实登录。没有核实本项目可用的官方内容接口，不据此断言此类接口不存在。
 
 此前关于 KOReader 插件、排版、启动脚本的资料已退出实现依据；其能力不能套用到本项目的独立应用。旧版 KPVBooklet 也不作为 Vera 环境的启动方案。
 

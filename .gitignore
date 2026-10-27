@@ -1,0 +1,6 @@
+/dist/
+/.tools/
+/node_modules/
+/.local-data/
+/test-results/
+*.test

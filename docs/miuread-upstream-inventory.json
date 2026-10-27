@@ -1,0 +1,2005 @@
+{
+  "upstream": "https://github.com/miumiupy98-art/miuread-koreader",
+  "commit": "581f9b660097aa42fe33170098346862cf0a9bbf",
+  "scope": "Static literal require inventory only. Dynamic imports, globals, native ABI and runtime reachability are not certified.",
+  "lua_files": 154,
+  "lua_lines": 105115,
+  "require_groups_per_module": {
+    "miuread": 491,
+    "ui": 344,
+    "logger": 73,
+    "ffi": 44,
+    "device": 37,
+    "libs": 28,
+    "util": 10,
+    "bit": 9,
+    "datastorage": 8,
+    "document": 3,
+    "apps": 2,
+    "lua-ljsqlite3": 2,
+    "ltn12": 2,
+    "pluginloader": 2,
+    "luasettings": 2,
+    "docsettings": 1,
+    "dispatcher": 1,
+    "socketutil": 1,
+    "dump": 1,
+    "fontlist": 1,
+    "socket": 1
+  },
+  "modules": [
+    {
+      "path": "miuread.koplugin/_meta.lua",
+      "lines": 6,
+      "static_requires": [
+        "miuread.text"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/main.lua",
+      "lines": 32817,
+      "static_requires": [
+        "apps/filemanager/filemanager",
+        "apps/reader/readerui",
+        "device",
+        "docsettings",
+        "document/credocument",
+        "ffi/blitbuffer",
+        "libs/libkoreader-lfs",
+        "logger",
+        "miuread.access",
+        "miuread.action_sheet",
+        "miuread.actions",
+        "miuread.annotation_sync",
+        "miuread.annotations",
+        "miuread.api",
+        "miuread.api_transport",
+        "miuread.async",
+        "miuread.auth",
+        "miuread.background_scheduler",
+        "miuread.bluetooth",
+        "miuread.book_delete_service",
+        "miuread.book_excerpt_dialog",
+        "miuread.book_integrity",
+        "miuread.book_local_files_dialog",
+        "miuread.bookstore",
+        "miuread.cache_cleanup_task",
+        "miuread.codec",
+        "miuread.config",
+        "miuread.cookies",
+        "miuread.cover_render",
+        "miuread.data_migration",
+        "miuread.diagnostic_log",
+        "miuread.download_database",
+        "miuread.download_progress",
+        "miuread.download_result",
+        "miuread.download_task",
+        "miuread.downloader",
+        "miuread.epub_installer",
+        "miuread.extension_center",
+        "miuread.extension_job",
+        "miuread.finished_status",
+        "miuread.frontlight_controller",
+        "miuread.gesture_bridge",
+        "miuread.home_data",
+        "miuread.http",
+        "miuread.json",
+        "miuread.library",
+        "miuread.local_annotation_database",
+        "miuread.local_library",
+        "miuread.local_metadata",
+        "miuread.memory_mode",
+        "miuread.mp",
+        "miuread.network_health",
+        "miuread.network_metadata",
+        "miuread.orientation_controller",
+        "miuread.performance_mode",
+        "miuread.plugin_menu",
+        "miuread.plugin_menu_adapter",
+        "miuread.plugin_settings",
+        "miuread.position_resolution",
+        "miuread.power_state",
+        "miuread.protocol",
+        "miuread.pseudo_lockscreen",
+        "miuread.reader",
+        "miuread.reader_control_center",
+        "miuread.reader_frontlight_dialog",
+        "miuread.reader_list_dialog",
+        "miuread.reader_progress_dialog",
+        "miuread.reader_settings_dialog",
+        "miuread.reader_toc_dialog",
+        "miuread.reader_toolbar",
+        "miuread.reader_transition_guard",
+        "miuread.reader_typography_dialog",
+        "miuread.reading_stats_dialog",
+        "miuread.runtime_pressure",
+        "miuread.screenshot_mode",
+        "miuread.shelf_client",
+        "miuread.shelf_progress",
+        "miuread.shelf_view",
+        "miuread.status_toast",
+        "miuread.store",
+        "miuread.subprocess_hygiene",
+        "miuread.suspend_work_lease",
+        "miuread.sync",
+        "miuread.text",
+        "miuread.thought_database",
+        "miuread.thought_favorites",
+        "miuread.thought_native_popup",
+        "miuread.thoughts",
+        "miuread.timezone",
+        "miuread.transient_guard",
+        "miuread.translation",
+        "miuread.translation_generation",
+        "miuread.translation_ui",
+        "miuread.ui_scale",
+        "miuread.unified_library",
+        "miuread.updater",
+        "miuread.util",
+        "ui/event",
+        "ui/time",
+        "ui/uimanager",
+        "ui/widget/buttondialog",
+        "ui/widget/confirmbox",
+        "ui/widget/container/widgetcontainer",
+        "ui/widget/infomessage",
+        "ui/widget/inputdialog",
+        "ui/widget/menu",
+        "ui/widget/pathchooser"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/access.lua",
+      "lines": 127,
+      "static_requires": [
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/action_sheet.lua",
+      "lines": 644,
+      "static_requires": [
+        "ffi/blitbuffer",
+        "logger",
+        "miuread.dialog_transition",
+        "miuread.transient_guard",
+        "miuread.ui_components",
+        "miuread.ui_scale",
+        "miuread.util",
+        "ui/geometry",
+        "ui/gesturerange",
+        "ui/uimanager",
+        "ui/widget/buttondialog",
+        "ui/widget/container/centercontainer",
+        "ui/widget/container/framecontainer",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/container/leftcontainer",
+        "ui/widget/container/widgetcontainer",
+        "ui/widget/horizontalgroup",
+        "ui/widget/horizontalspan",
+        "ui/widget/infomessage",
+        "ui/widget/overlapgroup",
+        "ui/widget/textboxwidget",
+        "ui/widget/textwidget",
+        "ui/widget/verticalgroup",
+        "ui/widget/verticalspan",
+        "ui/widget/widget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/actions.lua",
+      "lines": 46,
+      "static_requires": [
+        "dispatcher"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/annotation_coord.lua",
+      "lines": 102,
+      "static_requires": [
+        "miuread.annotations.posmap",
+        "miuread.annotations.range",
+        "miuread.annotations.runes"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/annotation_style.lua",
+      "lines": 225,
+      "static_requires": []
+    },
+    {
+      "path": "miuread.koplugin/miuread/annotation_sync.lua",
+      "lines": 1385,
+      "static_requires": [
+        "logger",
+        "miuread.annotation_coord",
+        "miuread.annotations.posmap",
+        "miuread.annotations.range",
+        "miuread.config",
+        "miuread.http",
+        "miuread.json",
+        "miuread.local_annotation_database",
+        "miuread.thought_database",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/annotations/posmap.lua",
+      "lines": 850,
+      "static_requires": [
+        "miuread.annotations.range",
+        "miuread.annotations.runes",
+        "util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/annotations/range.lua",
+      "lines": 151,
+      "static_requires": [
+        "util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/annotations/runes.lua",
+      "lines": 80,
+      "static_requires": [
+        "util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/annotations.lua",
+      "lines": 1003,
+      "static_requires": [
+        "logger",
+        "miuread.annotation_coord",
+        "miuread.annotation_style",
+        "miuread.annotations.posmap",
+        "miuread.annotations.range",
+        "miuread.http",
+        "miuread.thoughts",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/api.lua",
+      "lines": 93,
+      "static_requires": [
+        "miuread.api_transport",
+        "miuread.api_web",
+        "miuread.eink_client",
+        "miuread.protocol"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/api_transport.lua",
+      "lines": 86,
+      "static_requires": [
+        "miuread.diagnostic_log",
+        "miuread.http",
+        "miuread.shelf_client"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/api_web.lua",
+      "lines": 889,
+      "static_requires": [
+        "logger",
+        "miuread.bookstore_data",
+        "miuread.codec",
+        "miuread.http",
+        "miuread.json",
+        "miuread.protocol",
+        "miuread.shelf_client",
+        "miuread.shelf_progress",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/async.lua",
+      "lines": 98,
+      "static_requires": [
+        "ffi/util",
+        "miuread.json",
+        "miuread.runtime_pressure",
+        "miuread.subprocess_hygiene",
+        "miuread.util",
+        "ui/uimanager"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/auth.lua",
+      "lines": 563,
+      "static_requires": [
+        "device",
+        "logger",
+        "miuread.cookies",
+        "miuread.device_identity",
+        "miuread.gesture_bridge",
+        "miuread.http",
+        "miuread.protocol",
+        "miuread.text",
+        "miuread.util",
+        "ui/uimanager",
+        "ui/widget/buttondialog",
+        "ui/widget/inputdialog",
+        "ui/widget/qrmessage"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/background_power/controller.lua",
+      "lines": 119,
+      "static_requires": [
+        "device",
+        "miuread.background_power.kindle",
+        "miuread.background_power.kobo_legacy"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/background_power/kindle.lua",
+      "lines": 423,
+      "static_requires": [
+        "device",
+        "logger",
+        "ui/uimanager"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/background_power/kobo_legacy.lua",
+      "lines": 1095,
+      "static_requires": [
+        "device",
+        "logger",
+        "miuread.suspend_work_lease",
+        "ui/screensaver",
+        "ui/uimanager"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/background_scheduler.lua",
+      "lines": 298,
+      "static_requires": [
+        "logger",
+        "miuread.config",
+        "miuread.runtime_pressure",
+        "ui/uimanager"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/bluetooth.lua",
+      "lines": 434,
+      "static_requires": [
+        "device",
+        "logger"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/book_delete_service.lua",
+      "lines": 612,
+      "static_requires": [
+        "libs/libkoreader-lfs",
+        "miuread.book_integrity",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/book_excerpt_card/assets.lua",
+      "lines": 222,
+      "static_requires": [
+        "ffi",
+        "ffi/blitbuffer",
+        "ffi/util",
+        "libs/libkoreader-lfs",
+        "logger"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/book_excerpt_card/config.lua",
+      "lines": 33,
+      "static_requires": []
+    },
+    {
+      "path": "miuread.koplugin/miuread/book_excerpt_card/device.lua",
+      "lines": 105,
+      "static_requires": [
+        "device",
+        "logger"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/book_excerpt_card/draw.lua",
+      "lines": 195,
+      "static_requires": [
+        "ffi",
+        "ffi/blitbuffer",
+        "logger",
+        "miuread.book_excerpt_card.config"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/book_excerpt_card/fonts.lua",
+      "lines": 99,
+      "static_requires": [
+        "device",
+        "document/credocument",
+        "miuread.book_excerpt_card.config",
+        "ui/font",
+        "util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/book_excerpt_card/init.lua",
+      "lines": 76,
+      "static_requires": [
+        "miuread.book_excerpt_card",
+        "miuread.book_excerpt_card.assets",
+        "miuread.book_excerpt_card.config",
+        "miuread.book_excerpt_card.device",
+        "miuread.book_excerpt_card.draw",
+        "miuread.book_excerpt_card.fonts",
+        "miuread.book_excerpt_card.render",
+        "miuread.book_excerpt_card.rgb32",
+        "miuread.book_excerpt_card.templates",
+        "miuread.book_excerpt_card.text",
+        "miuread.book_excerpt_card.vertical"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/book_excerpt_card/render.lua",
+      "lines": 821,
+      "static_requires": [
+        "datastorage",
+        "ffi/blitbuffer",
+        "ffi/util",
+        "logger",
+        "miuread.book_excerpt_card.assets",
+        "miuread.book_excerpt_card.config",
+        "miuread.book_excerpt_card.device",
+        "miuread.book_excerpt_card.draw",
+        "miuread.book_excerpt_card.fonts",
+        "miuread.book_excerpt_card.runes",
+        "miuread.book_excerpt_card.templates",
+        "miuread.book_excerpt_card.text",
+        "miuread.book_excerpt_card.vertical",
+        "ui/rendertext",
+        "util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/book_excerpt_card/rgb32.lua",
+      "lines": 80,
+      "static_requires": [
+        "bit",
+        "ffi/blitbuffer",
+        "logger",
+        "ui/rendertext",
+        "util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/book_excerpt_card/runes.lua",
+      "lines": 23,
+      "static_requires": [
+        "util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/book_excerpt_card/templates.lua",
+      "lines": 275,
+      "static_requires": [
+        "miuread.book_excerpt_card.config"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/book_excerpt_card/text.lua",
+      "lines": 192,
+      "static_requires": [
+        "miuread.book_excerpt_card.runes",
+        "ui/rendertext",
+        "util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/book_excerpt_card/vertical.lua",
+      "lines": 313,
+      "static_requires": [
+        "miuread.book_excerpt_card.assets",
+        "miuread.book_excerpt_card.config",
+        "miuread.book_excerpt_card.fonts",
+        "miuread.book_excerpt_card.runes",
+        "miuread.book_excerpt_card.text",
+        "ui/rendertext",
+        "util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/book_excerpt_card.lua",
+      "lines": 16,
+      "static_requires": [
+        "miuread.book_excerpt_card",
+        "miuread.book_excerpt_card.init"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/book_excerpt_dialog.lua",
+      "lines": 899,
+      "static_requires": [
+        "datastorage",
+        "device",
+        "ffi/blitbuffer",
+        "ffi/util",
+        "logger",
+        "miuread.book_excerpt_card",
+        "miuread.book_excerpt_transfer",
+        "miuread.gesture_bridge",
+        "miuread.util",
+        "ui/font",
+        "ui/geometry",
+        "ui/gesturerange",
+        "ui/size",
+        "ui/uimanager",
+        "ui/widget/buttondialog",
+        "ui/widget/buttontable",
+        "ui/widget/container/centercontainer",
+        "ui/widget/container/framecontainer",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/container/widgetcontainer",
+        "ui/widget/horizontalgroup",
+        "ui/widget/horizontalspan",
+        "ui/widget/imagewidget",
+        "ui/widget/qrwidget",
+        "ui/widget/textboxwidget",
+        "ui/widget/textwidget",
+        "ui/widget/verticalgroup",
+        "ui/widget/verticalspan",
+        "util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/book_excerpt_transfer.lua",
+      "lines": 476,
+      "static_requires": [
+        "device",
+        "logger",
+        "miuread.util",
+        "ui/uimanager"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/book_integrity.lua",
+      "lines": 400,
+      "static_requires": [
+        "libs/libkoreader-lfs",
+        "miuread.digests",
+        "miuread.download_database",
+        "miuread.download_result",
+        "miuread.epub_installer",
+        "miuread.json",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/book_local_files_dialog.lua",
+      "lines": 145,
+      "static_requires": [
+        "libs/libkoreader-lfs",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/bookstore.lua",
+      "lines": 515,
+      "static_requires": [
+        "logger",
+        "miuread.api",
+        "miuread.api_transport",
+        "miuread.auth",
+        "miuread.bookstore_data",
+        "miuread.gesture_bridge",
+        "miuread.http",
+        "miuread.reader",
+        "miuread.shelf_client",
+        "miuread.shelf_membership",
+        "miuread.shelf_view",
+        "miuread.transient_guard",
+        "miuread.util",
+        "ui/uimanager",
+        "ui/widget/buttondialog"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/bookstore_data.lua",
+      "lines": 126,
+      "static_requires": [
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/cache_cleanup_task.lua",
+      "lines": 359,
+      "static_requires": [
+        "ffi/util",
+        "libs/libkoreader-lfs",
+        "logger",
+        "miuread.json",
+        "miuread.subprocess_hygiene",
+        "miuread.util",
+        "ui/uimanager"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/codec.lua",
+      "lines": 557,
+      "static_requires": [
+        "bit",
+        "miuread.digests",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/config.lua",
+      "lines": 406,
+      "static_requires": []
+    },
+    {
+      "path": "miuread.koplugin/miuread/cookies.lua",
+      "lines": 227,
+      "static_requires": [
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/cover_render.lua",
+      "lines": 255,
+      "static_requires": [
+        "ffi",
+        "ffi/blitbuffer",
+        "libs/libkoreader-lfs",
+        "logger",
+        "ui/renderimage"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/data_migration.lua",
+      "lines": 102,
+      "static_requires": [
+        "libs/libkoreader-lfs",
+        "miuread.json",
+        "miuread.thought_database",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/device_identity.lua",
+      "lines": 51,
+      "static_requires": []
+    },
+    {
+      "path": "miuread.koplugin/miuread/diagnostic_log.lua",
+      "lines": 67,
+      "static_requires": [
+        "logger",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/dialog_transition.lua",
+      "lines": 49,
+      "static_requires": [
+        "logger",
+        "ui/uimanager"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/digests.lua",
+      "lines": 130,
+      "static_requires": [
+        "bit"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/download_database.lua",
+      "lines": 165,
+      "static_requires": [
+        "libs/libkoreader-lfs",
+        "miuread.sqlite_store",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/download_plan.lua",
+      "lines": 73,
+      "static_requires": [
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/download_progress.lua",
+      "lines": 374,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "logger",
+        "miuread.gesture_bridge",
+        "miuread.util",
+        "ui/font",
+        "ui/geometry",
+        "ui/size",
+        "ui/uimanager",
+        "ui/widget/buttontable",
+        "ui/widget/container/centercontainer",
+        "ui/widget/container/framecontainer",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/progresswidget",
+        "ui/widget/textboxwidget",
+        "ui/widget/verticalgroup",
+        "ui/widget/verticalspan"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/download_result.lua",
+      "lines": 76,
+      "static_requires": []
+    },
+    {
+      "path": "miuread.koplugin/miuread/download_task.lua",
+      "lines": 2553,
+      "static_requires": [
+        "device",
+        "ffi/util",
+        "libs/libkoreader-lfs",
+        "logger",
+        "miuread.annotations",
+        "miuread.api",
+        "miuread.config",
+        "miuread.downloader",
+        "miuread.http",
+        "miuread.json",
+        "miuread.library",
+        "miuread.pseudo_lockscreen",
+        "miuread.reader",
+        "miuread.runtime_pressure",
+        "miuread.store",
+        "miuread.subprocess_hygiene",
+        "miuread.suspend_work_lease",
+        "miuread.util",
+        "ui/uimanager"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/download_transport.lua",
+      "lines": 184,
+      "static_requires": [
+        "miuread.api",
+        "miuread.api_transport",
+        "miuread.diagnostic_log",
+        "miuread.eink_client",
+        "miuread.http",
+        "miuread.protocol",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/downloader.lua",
+      "lines": 2690,
+      "static_requires": [
+        "logger",
+        "miuread.annotation_coord",
+        "miuread.book_integrity",
+        "miuread.codec",
+        "miuread.config",
+        "miuread.download_database",
+        "miuread.download_plan",
+        "miuread.download_transport",
+        "miuread.epub",
+        "miuread.epub_installer",
+        "miuread.footnotes",
+        "miuread.http",
+        "miuread.internal_links",
+        "miuread.protocol",
+        "miuread.resource_refs",
+        "miuread.source_position",
+        "miuread.thoughts",
+        "miuread.translation",
+        "miuread.translation_generation",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/eink_archive.lua",
+      "lines": 199,
+      "static_requires": [
+        "bit",
+        "miuread.codec",
+        "miuread.eink_crypto",
+        "miuread.json",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/eink_client.lua",
+      "lines": 351,
+      "static_requires": [
+        "miuread.api_transport",
+        "miuread.bookstore_data",
+        "miuread.http",
+        "miuread.json",
+        "miuread.protocol",
+        "miuread.shelf_client",
+        "miuread.shelf_progress"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/eink_crypto.lua",
+      "lines": 80,
+      "static_requires": [
+        "bit",
+        "ffi",
+        "miuread.codec"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/epub.lua",
+      "lines": 333,
+      "static_requires": [
+        "bit",
+        "miuread.annotation_style",
+        "miuread.json",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/epub_installer.lua",
+      "lines": 413,
+      "static_requires": [
+        "libs/libkoreader-lfs",
+        "miuread.json",
+        "miuread.resource_refs",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/extension_catalog.lua",
+      "lines": 935,
+      "static_requires": []
+    },
+    {
+      "path": "miuread.koplugin/miuread/extension_center.lua",
+      "lines": 2814,
+      "static_requires": [
+        "datastorage",
+        "ffi/util",
+        "libs/libkoreader-lfs",
+        "logger",
+        "miuread.async",
+        "miuread.config",
+        "miuread.download_progress",
+        "miuread.extension_catalog",
+        "miuread.extension_compat",
+        "miuread.extension_install",
+        "miuread.extension_job",
+        "miuread.http",
+        "miuread.json",
+        "miuread.native_plugins",
+        "miuread.pseudo_lockscreen",
+        "miuread.suspend_work_lease",
+        "miuread.util",
+        "ui/uimanager",
+        "ui/widget/buttondialog",
+        "ui/widget/confirmbox",
+        "ui/widget/infomessage",
+        "ui/widget/inputdialog",
+        "ui/widget/menu"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/extension_compat.lua",
+      "lines": 316,
+      "static_requires": [
+        "datastorage",
+        "device",
+        "ffi/util",
+        "libs/libkoreader-lfs",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/extension_download.lua",
+      "lines": 695,
+      "static_requires": [
+        "logger",
+        "miuread.config",
+        "miuread.http",
+        "miuread.json",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/extension_install.lua",
+      "lines": 296,
+      "static_requires": [
+        "datastorage",
+        "libs/libkoreader-lfs",
+        "logger",
+        "miuread.extension_compat",
+        "miuread.json",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/extension_job.lua",
+      "lines": 706,
+      "static_requires": [
+        "ffi/util",
+        "libs/libkoreader-lfs",
+        "logger",
+        "miuread.config",
+        "miuread.extension_download",
+        "miuread.json",
+        "miuread.pseudo_lockscreen",
+        "miuread.subprocess_hygiene",
+        "miuread.util",
+        "ui/uimanager"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/finished_status.lua",
+      "lines": 217,
+      "static_requires": [
+        "miuread.protocol",
+        "miuread.shelf_progress",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/footnotes.lua",
+      "lines": 841,
+      "static_requires": [
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/frontlight_controller.lua",
+      "lines": 250,
+      "static_requires": [
+        "device",
+        "logger"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/full_shelf_view.lua",
+      "lines": 475,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "miuread.ui_components",
+        "miuread.ui_scale",
+        "miuread.util",
+        "ui/geometry",
+        "ui/gesturerange",
+        "ui/uimanager",
+        "ui/widget/container/centercontainer",
+        "ui/widget/container/framecontainer",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/container/leftcontainer",
+        "ui/widget/container/widgetcontainer",
+        "ui/widget/horizontalgroup",
+        "ui/widget/horizontalspan",
+        "ui/widget/imagewidget",
+        "ui/widget/linewidget",
+        "ui/widget/overlapgroup",
+        "ui/widget/textboxwidget",
+        "ui/widget/textwidget",
+        "ui/widget/verticalgroup",
+        "ui/widget/verticalspan",
+        "ui/widget/widget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/gesture_bridge.lua",
+      "lines": 164,
+      "static_requires": [
+        "logger",
+        "ui/uimanager"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/home_data.lua",
+      "lines": 676,
+      "static_requires": [
+        "datastorage",
+        "device",
+        "libs/libkoreader-lfs",
+        "logger",
+        "lua-ljsqlite3/init",
+        "miuread.network_health"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/home_quick_panel.lua",
+      "lines": 730,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "logger",
+        "miuread.gesture_bridge",
+        "miuread.transient_guard",
+        "miuread.ui_components",
+        "miuread.ui_scale",
+        "ui/geometry",
+        "ui/gesturerange",
+        "ui/uimanager",
+        "ui/widget/container/centercontainer",
+        "ui/widget/container/framecontainer",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/container/leftcontainer",
+        "ui/widget/container/widgetcontainer",
+        "ui/widget/horizontalgroup",
+        "ui/widget/horizontalspan",
+        "ui/widget/linewidget",
+        "ui/widget/overlapgroup",
+        "ui/widget/textboxwidget",
+        "ui/widget/textwidget",
+        "ui/widget/verticalgroup",
+        "ui/widget/verticalspan",
+        "ui/widget/widget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/home_view.lua",
+      "lines": 2288,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "logger",
+        "miuread.config",
+        "miuread.gesture_bridge",
+        "miuread.shelf_progress",
+        "miuread.ui_components",
+        "miuread.ui_scale",
+        "miuread.util",
+        "ui/font",
+        "ui/geometry",
+        "ui/gesturerange",
+        "ui/size",
+        "ui/uimanager",
+        "ui/widget/container/centercontainer",
+        "ui/widget/container/framecontainer",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/container/leftcontainer",
+        "ui/widget/container/widgetcontainer",
+        "ui/widget/horizontalgroup",
+        "ui/widget/horizontalspan",
+        "ui/widget/imagewidget",
+        "ui/widget/linewidget",
+        "ui/widget/overlapgroup",
+        "ui/widget/textboxwidget",
+        "ui/widget/textwidget",
+        "ui/widget/verticalgroup",
+        "ui/widget/verticalspan",
+        "ui/widget/widget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/http.lua",
+      "lines": 1340,
+      "static_requires": [
+        "logger",
+        "ltn12",
+        "miuread.config",
+        "miuread.cookies",
+        "miuread.json",
+        "miuread.network_health",
+        "miuread.network_policy",
+        "miuread.protocol",
+        "miuread.util",
+        "socketutil"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/icon_registry.lua",
+      "lines": 133,
+      "static_requires": [
+        "ffi/blitbuffer",
+        "libs/libkoreader-lfs",
+        "logger",
+        "ui/widget/imagewidget",
+        "ui/widget/textwidget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/internal_links.lua",
+      "lines": 662,
+      "static_requires": []
+    },
+    {
+      "path": "miuread.koplugin/miuread/json.lua",
+      "lines": 15,
+      "static_requires": []
+    },
+    {
+      "path": "miuread.koplugin/miuread/legacy/client.lua",
+      "lines": 198,
+      "static_requires": [
+        "ltn12",
+        "miuread.legacy.cookie",
+        "miuread.legacy.weread",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/legacy/content.lua",
+      "lines": 90,
+      "static_requires": [
+        "miuread.legacy.weread"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/legacy/cookie.lua",
+      "lines": 42,
+      "static_requires": []
+    },
+    {
+      "path": "miuread.koplugin/miuread/legacy/crypto.lua",
+      "lines": 202,
+      "static_requires": [
+        "bit"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/legacy/read_report_worker.lua",
+      "lines": 816,
+      "static_requires": [
+        "miuread.http",
+        "miuread.legacy.client",
+        "miuread.legacy.content",
+        "miuread.legacy.cookie",
+        "miuread.legacy.weread",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/legacy/weread.lua",
+      "lines": 169,
+      "static_requires": [
+        "bit",
+        "miuread.legacy.crypto"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/legacy_adapter_worker.lua",
+      "lines": 163,
+      "static_requires": [
+        "miuread.legacy.read_report_worker"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/library.lua",
+      "lines": 1202,
+      "static_requires": [
+        "logger",
+        "miuread.codec",
+        "miuread.download_result",
+        "miuread.finished_status",
+        "miuread.protocol",
+        "miuread.shelf_progress",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/local_annotation_database.lua",
+      "lines": 941,
+      "static_requires": [
+        "libs/libkoreader-lfs",
+        "logger",
+        "miuread.digests",
+        "miuread.sqlite_store"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/local_browser_view.lua",
+      "lines": 463,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "miuread.ui_components",
+        "miuread.ui_scale",
+        "miuread.util",
+        "ui/geometry",
+        "ui/gesturerange",
+        "ui/uimanager",
+        "ui/widget/container/centercontainer",
+        "ui/widget/container/framecontainer",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/container/widgetcontainer",
+        "ui/widget/horizontalgroup",
+        "ui/widget/horizontalspan",
+        "ui/widget/imagewidget",
+        "ui/widget/linewidget",
+        "ui/widget/overlapgroup",
+        "ui/widget/textboxwidget",
+        "ui/widget/textwidget",
+        "ui/widget/verticalgroup",
+        "ui/widget/verticalspan",
+        "ui/widget/widget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/local_library.lua",
+      "lines": 430,
+      "static_requires": [
+        "libs/libkoreader-lfs"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/local_metadata.lua",
+      "lines": 604,
+      "static_requires": [
+        "libs/libkoreader-lfs",
+        "logger",
+        "miuread.json",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/memory_mode.lua",
+      "lines": 188,
+      "static_requires": [
+        "logger",
+        "miuread.config"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/mp.lua",
+      "lines": 646,
+      "static_requires": [
+        "libs/libkoreader-lfs",
+        "logger",
+        "miuread.codec",
+        "miuread.http",
+        "miuread.json",
+        "miuread.library",
+        "miuread.protocol",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/native_plugins.lua",
+      "lines": 281,
+      "static_requires": [
+        "logger",
+        "miuread.plugin_menu_adapter",
+        "pluginloader"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/network_health.lua",
+      "lines": 48,
+      "static_requires": [
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/network_metadata.lua",
+      "lines": 195,
+      "static_requires": [
+        "logger",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/network_policy.lua",
+      "lines": 139,
+      "static_requires": [
+        "logger",
+        "miuread.config",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/orientation_controller.lua",
+      "lines": 205,
+      "static_requires": [
+        "device",
+        "logger",
+        "ui/event",
+        "ui/uimanager"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/performance_mode.lua",
+      "lines": 209,
+      "static_requires": [
+        "logger",
+        "miuread.config",
+        "miuread.runtime_pressure"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/plugin_menu.lua",
+      "lines": 68,
+      "static_requires": [
+        "miuread.plugin_settings"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/plugin_menu_adapter.lua",
+      "lines": 197,
+      "static_requires": [
+        "logger"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/plugin_settings.lua",
+      "lines": 200,
+      "static_requires": [
+        "miuread.api_transport",
+        "miuread.extension_center"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/position_resolution.lua",
+      "lines": 219,
+      "static_requires": []
+    },
+    {
+      "path": "miuread.koplugin/miuread/power_state.lua",
+      "lines": 82,
+      "static_requires": [
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/precise_position.lua",
+      "lines": 587,
+      "static_requires": [
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/protocol.lua",
+      "lines": 102,
+      "static_requires": [
+        "bit",
+        "miuread.digests"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/pseudo_lockscreen.lua",
+      "lines": 2,
+      "static_requires": [
+        "miuread.background_power.controller"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/read_report_service.lua",
+      "lines": 702,
+      "static_requires": [
+        "miuread.config",
+        "miuread.json",
+        "miuread.legacy_adapter_worker",
+        "miuread.subprocess_hygiene",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/reader.lua",
+      "lines": 1588,
+      "static_requires": [
+        "logger",
+        "miuread.annotation_coord",
+        "miuread.api",
+        "miuread.codec",
+        "miuread.cookies",
+        "miuread.eink_archive",
+        "miuread.eink_client",
+        "miuread.http",
+        "miuread.json",
+        "miuread.protocol",
+        "miuread.translation_generation",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/reader_control_center.lua",
+      "lines": 439,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "logger",
+        "miuread.reader_skin",
+        "miuread.transient_guard",
+        "miuread.ui_components",
+        "ui/geometry",
+        "ui/gesturerange",
+        "ui/uimanager",
+        "ui/widget/container/centercontainer",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/container/leftcontainer",
+        "ui/widget/container/widgetcontainer",
+        "ui/widget/horizontalgroup",
+        "ui/widget/horizontalspan",
+        "ui/widget/linewidget",
+        "ui/widget/overlapgroup",
+        "ui/widget/textboxwidget",
+        "ui/widget/textwidget",
+        "ui/widget/widget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/reader_frontlight_dialog.lua",
+      "lines": 560,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "logger",
+        "miuread.reader_skin",
+        "miuread.transient_guard",
+        "miuread.ui_components",
+        "ui/geometry",
+        "ui/gesturerange",
+        "ui/uimanager",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/container/widgetcontainer",
+        "ui/widget/horizontalgroup",
+        "ui/widget/horizontalspan",
+        "ui/widget/linewidget",
+        "ui/widget/overlapgroup",
+        "ui/widget/textwidget",
+        "ui/widget/verticalgroup",
+        "ui/widget/widget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/reader_list_dialog.lua",
+      "lines": 631,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "logger",
+        "miuread.dialog_transition",
+        "miuread.reader_skin",
+        "miuread.transient_guard",
+        "miuread.ui_components",
+        "ui/geometry",
+        "ui/gesturerange",
+        "ui/uimanager",
+        "ui/widget/container/centercontainer",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/container/widgetcontainer",
+        "ui/widget/horizontalgroup",
+        "ui/widget/horizontalspan",
+        "ui/widget/linewidget",
+        "ui/widget/overlapgroup",
+        "ui/widget/widget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/reader_progress_dialog.lua",
+      "lines": 375,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "logger",
+        "miuread.reader_skin",
+        "miuread.transient_guard",
+        "miuread.ui_components",
+        "ui/geometry",
+        "ui/gesturerange",
+        "ui/uimanager",
+        "ui/widget/container/centercontainer",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/container/leftcontainer",
+        "ui/widget/container/widgetcontainer",
+        "ui/widget/horizontalgroup",
+        "ui/widget/linewidget",
+        "ui/widget/overlapgroup",
+        "ui/widget/textboxwidget",
+        "ui/widget/widget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/reader_settings_dialog.lua",
+      "lines": 466,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "logger",
+        "miuread.dialog_transition",
+        "miuread.reader_skin",
+        "miuread.transient_guard",
+        "miuread.ui_components",
+        "ui/geometry",
+        "ui/gesturerange",
+        "ui/uimanager",
+        "ui/widget/container/centercontainer",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/container/leftcontainer",
+        "ui/widget/container/widgetcontainer",
+        "ui/widget/horizontalgroup",
+        "ui/widget/horizontalspan",
+        "ui/widget/linewidget",
+        "ui/widget/overlapgroup",
+        "ui/widget/textboxwidget",
+        "ui/widget/widget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/reader_skin.lua",
+      "lines": 91,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "miuread.ui_scale",
+        "ui/geometry",
+        "ui/widget/container/centercontainer",
+        "ui/widget/container/framecontainer",
+        "ui/widget/linewidget",
+        "ui/widget/widget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/reader_toc_dialog.lua",
+      "lines": 352,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "logger",
+        "miuread.reader_skin",
+        "miuread.transient_guard",
+        "miuread.ui_components",
+        "ui/geometry",
+        "ui/gesturerange",
+        "ui/uimanager",
+        "ui/widget/container/centercontainer",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/container/leftcontainer",
+        "ui/widget/container/widgetcontainer",
+        "ui/widget/horizontalgroup",
+        "ui/widget/horizontalspan",
+        "ui/widget/linewidget",
+        "ui/widget/overlapgroup",
+        "ui/widget/textboxwidget",
+        "ui/widget/widget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/reader_toolbar.lua",
+      "lines": 959,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "logger",
+        "miuread.reader_skin",
+        "miuread.transient_guard",
+        "miuread.ui_components",
+        "miuread.ui_scale",
+        "miuread.util",
+        "ui/geometry",
+        "ui/gesturerange",
+        "ui/uimanager",
+        "ui/widget/container/centercontainer",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/container/widgetcontainer",
+        "ui/widget/horizontalgroup",
+        "ui/widget/horizontalspan",
+        "ui/widget/linewidget",
+        "ui/widget/overlapgroup",
+        "ui/widget/textboxwidget",
+        "ui/widget/textwidget",
+        "ui/widget/verticalgroup",
+        "ui/widget/widget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/reader_transition_guard.lua",
+      "lines": 95,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "logger",
+        "ui/geometry",
+        "ui/uimanager",
+        "ui/widget/container/widgetcontainer"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/reader_typography_dialog.lua",
+      "lines": 412,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "logger",
+        "miuread.dialog_transition",
+        "miuread.reader_skin",
+        "miuread.thought_face_factory",
+        "miuread.ui_components",
+        "ui/geometry",
+        "ui/gesturerange",
+        "ui/uimanager",
+        "ui/widget/container/centercontainer",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/container/widgetcontainer",
+        "ui/widget/horizontalgroup",
+        "ui/widget/horizontalspan",
+        "ui/widget/linewidget",
+        "ui/widget/overlapgroup",
+        "ui/widget/textboxwidget",
+        "ui/widget/verticalgroup",
+        "ui/widget/verticalspan",
+        "ui/widget/widget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/reading_stats_dialog.lua",
+      "lines": 600,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "logger",
+        "miuread.home_data",
+        "miuread.reader_skin",
+        "miuread.transient_guard",
+        "miuread.ui_components",
+        "ui/geometry",
+        "ui/gesturerange",
+        "ui/uimanager",
+        "ui/widget/container/centercontainer",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/container/widgetcontainer",
+        "ui/widget/horizontalgroup",
+        "ui/widget/horizontalspan",
+        "ui/widget/linewidget",
+        "ui/widget/overlapgroup",
+        "ui/widget/verticalgroup",
+        "ui/widget/verticalspan",
+        "ui/widget/widget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/resource_refs.lua",
+      "lines": 408,
+      "static_requires": [
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/runtime_pressure.lua",
+      "lines": 207,
+      "static_requires": [
+        "logger",
+        "miuread.config",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/screenshot_mode.lua",
+      "lines": 88,
+      "static_requires": [
+        "logger",
+        "miuread.action_sheet",
+        "ui/uimanager"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/shelf_client.lua",
+      "lines": 178,
+      "static_requires": [
+        "miuread.diagnostic_log",
+        "miuread.digests",
+        "miuread.http",
+        "miuread.protocol",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/shelf_membership.lua",
+      "lines": 38,
+      "static_requires": []
+    },
+    {
+      "path": "miuread.koplugin/miuread/shelf_progress.lua",
+      "lines": 143,
+      "static_requires": []
+    },
+    {
+      "path": "miuread.koplugin/miuread/shelf_view.lua",
+      "lines": 414,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "logger",
+        "miuread.gesture_bridge",
+        "miuread.shelf_progress",
+        "miuread.ui_scale",
+        "miuread.util",
+        "ui/font",
+        "ui/geometry",
+        "ui/gesturerange",
+        "ui/size",
+        "ui/uimanager",
+        "ui/widget/container/centercontainer",
+        "ui/widget/container/framecontainer",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/container/leftcontainer",
+        "ui/widget/container/underlinecontainer",
+        "ui/widget/horizontalgroup",
+        "ui/widget/horizontalspan",
+        "ui/widget/imagewidget",
+        "ui/widget/menu",
+        "ui/widget/textboxwidget",
+        "ui/widget/textwidget",
+        "ui/widget/verticalgroup",
+        "ui/widget/verticalspan"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/source_position.lua",
+      "lines": 742,
+      "static_requires": [
+        "libs/libkoreader-lfs",
+        "logger",
+        "miuread.annotations.posmap",
+        "miuread.util",
+        "miuread.wr_co"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/sqlite_store.lua",
+      "lines": 153,
+      "static_requires": [
+        "logger",
+        "lua-ljsqlite3/init",
+        "miuread.json",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/status_toast.lua",
+      "lines": 197,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "ui/font",
+        "ui/geometry",
+        "ui/gesturerange",
+        "ui/size",
+        "ui/uimanager",
+        "ui/widget/container/framecontainer",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/overlapgroup",
+        "ui/widget/textboxwidget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/store.lua",
+      "lines": 3016,
+      "static_requires": [
+        "datastorage",
+        "dump",
+        "libs/libkoreader-lfs",
+        "logger",
+        "luasettings",
+        "miuread.book_integrity",
+        "miuread.config",
+        "miuread.cookies",
+        "miuread.download_database",
+        "miuread.json",
+        "miuread.position_resolution",
+        "miuread.shelf_progress",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/subprocess_hygiene.lua",
+      "lines": 67,
+      "static_requires": []
+    },
+    {
+      "path": "miuread.koplugin/miuread/suspend_work_lease.lua",
+      "lines": 154,
+      "static_requires": [
+        "device",
+        "logger",
+        "ui/uimanager"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/sync.lua",
+      "lines": 5925,
+      "static_requires": [
+        "ffi/util",
+        "logger",
+        "miuread.book_integrity",
+        "miuread.config",
+        "miuread.digests",
+        "miuread.http",
+        "miuread.json",
+        "miuread.legacy_adapter_worker",
+        "miuread.position_resolution",
+        "miuread.precise_position",
+        "miuread.protocol",
+        "miuread.read_report_service",
+        "miuread.source_position",
+        "miuread.subprocess_hygiene",
+        "miuread.util",
+        "ui/event",
+        "ui/uimanager"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/text.lua",
+      "lines": 33,
+      "static_requires": []
+    },
+    {
+      "path": "miuread.koplugin/miuread/thought_database.lua",
+      "lines": 404,
+      "static_requires": [
+        "libs/libkoreader-lfs",
+        "miuread.sqlite_store",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/thought_face_factory.lua",
+      "lines": 421,
+      "static_requires": [
+        "device",
+        "document/credocument",
+        "ffi/freetype",
+        "fontlist",
+        "logger",
+        "ui/font"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/thought_favorites.lua",
+      "lines": 342,
+      "static_requires": [
+        "libs/libkoreader-lfs",
+        "miuread.digests",
+        "miuread.sqlite_store",
+        "miuread.thoughts",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/thought_native_popup.lua",
+      "lines": 1811,
+      "static_requires": [
+        "device",
+        "ffi/blitbuffer",
+        "logger",
+        "miuread.thought_face_factory",
+        "miuread.transient_guard",
+        "miuread.util",
+        "ui/font",
+        "ui/geometry",
+        "ui/gesturerange",
+        "ui/size",
+        "ui/uimanager",
+        "ui/widget/buttondialog",
+        "ui/widget/container/centercontainer",
+        "ui/widget/container/framecontainer",
+        "ui/widget/container/inputcontainer",
+        "ui/widget/container/widgetcontainer",
+        "ui/widget/horizontalgroup",
+        "ui/widget/horizontalspan",
+        "ui/widget/overlapgroup",
+        "ui/widget/textboxwidget",
+        "ui/widget/textwidget",
+        "ui/widget/verticalgroup",
+        "ui/widget/verticalspan",
+        "ui/widget/widget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/thoughts.lua",
+      "lines": 692,
+      "static_requires": [
+        "libs/libkoreader-lfs",
+        "miuread.json",
+        "miuread.thought_database",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/timezone.lua",
+      "lines": 207,
+      "static_requires": [
+        "logger"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/transient_guard.lua",
+      "lines": 41,
+      "static_requires": [
+        "logger",
+        "miuread.dialog_transition",
+        "ui/uimanager"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/translation.lua",
+      "lines": 579,
+      "static_requires": [
+        "miuread.digests",
+        "miuread.epub_installer",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/translation_generation.lua",
+      "lines": 317,
+      "static_requires": [
+        "logger",
+        "miuread.translation",
+        "socket"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/translation_ui.lua",
+      "lines": 79,
+      "static_requires": [
+        "miuread.translation_generation"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/ui_components.lua",
+      "lines": 91,
+      "static_requires": [
+        "ffi/blitbuffer",
+        "miuread.icon_registry",
+        "ui/geometry",
+        "ui/widget/container/widgetcontainer",
+        "ui/widget/textboxwidget",
+        "ui/widget/textwidget"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/ui_scale.lua",
+      "lines": 148,
+      "static_requires": [
+        "device",
+        "ui/font"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/unified_library.lua",
+      "lines": 691,
+      "static_requires": [
+        "datastorage",
+        "libs/libkoreader-lfs",
+        "logger",
+        "luasettings",
+        "miuread.local_library",
+        "miuread.util",
+        "pluginloader"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/updater.lua",
+      "lines": 629,
+      "static_requires": [
+        "logger",
+        "miuread.config",
+        "miuread.digests",
+        "miuread.util"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/util.lua",
+      "lines": 419,
+      "static_requires": [
+        "libs/libkoreader-lfs"
+      ]
+    },
+    {
+      "path": "miuread.koplugin/miuread/wr_co.lua",
+      "lines": 119,
+      "static_requires": [
+        "miuread.annotations.posmap"
+      ]
+    }
+  ]
+}
