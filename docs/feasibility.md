@@ -7,7 +7,7 @@
 | 事实 | 证据 | 能支持的结论 | 不能推导的结论 |
 | --- | --- | --- | --- |
 | 仓库只有初始 README | 本地提交 `971ba8df038f14445318740d47d7316eded7dba9` 的文件清单 | 项目从文档和技术验证开始 | 已经有可安装的软件 |
-| 用户设备为 KPW5，已安装 KUAL | 用户在本次对话中的补充 | 首轮验证以 Kindle Paperwhite 5 和现有 KUAL 环境为对象 | 固件版本已知、KOReader 已安装或项目书架入口已验证 |
+| 用户设备为 KPW5，使用 Vera 越狱 | 用户在本次对话中的更正 | 首轮验证以 Kindle Paperwhite 5 和用户报告的 Vera 越狱环境为对象 | 固件版本已知、KUAL 或 KOReader 已安装、项目书架入口已验证 |
 | KOReader 面向墨水屏，支持 Kindle、中文排版相关设置和插件 | [上游 README](https://github.com/koreader/koreader/blob/f0db5fcb3c3e35949a99c8bff3dc36837a3f0fd6/README.md) | 可以作为候选阅读宿主 | 所有 Kindle 固件均兼容；已有起点插件 |
 | KOReader 有插件注册菜单示例 | [hello 插件](https://github.com/koreader/koreader/blob/f0db5fcb3c3e35949a99c8bff3dc36837a3f0fd6/plugins/hello.koplugin/main.lua) | 插件能扩展界面；示例本身默认禁用 | 存在从系统书架直接打开任意插件的标准参数 |
 | 上游已有网络内容转 EPUB 的插件 | [newsdownloader](https://github.com/koreader/koreader/blob/f0db5fcb3c3e35949a99c8bff3dc36837a3f0fd6/plugins/newsdownloader.koplugin/main.lua) | 值得复用/参考宿主的网络与阅读桥接能力 | RSS 方案可以直接获取起点正文或登录会话 |
@@ -23,7 +23,7 @@ KPVBooklet 的说明推荐 KUAL 或 [KOL / KUAL_Booklet](https://github.com/ypar
 
 **目标**：把“像书架里的 app”转换为可重现的真机结果。
 
-已知前置资料：KPW5，已安装 KUAL。仍需补齐完整固件版本、现有越狱与 KUAL 版本、KOReader 安装状态。无需收集完整序列号。
+已知前置资料：KPW5，使用 Vera 越狱。仍需补齐完整固件版本、Vera 版本、KUAL 与 KOReader 的安装状态及版本。此前关于已安装 KUAL 的信息已由用户更正，不作为验证前提。无需收集完整序列号。
 
 验证步骤：
 
@@ -72,8 +72,9 @@ KPVBooklet 的说明推荐 KUAL 或 [KOL / KUAL_Booklet](https://github.com/ypar
 | --- | --- |
 | 型号 | KPW5（Kindle Paperwhite 5），用户确认 |
 | 完整固件版本 | 待用户提供 |
-| 越狱与启动工具 / 版本 | 已安装 KUAL，用户确认；KUAL 版本与越狱方式待检查 |
-| CPU 架构 / KOReader 安装状态、构建与版本 | 待实机确认；不从已安装 KUAL 推断已安装 KOReader |
+| 越狱方式 / 版本 | Vera，用户更正；具体版本待确认 |
+| 启动工具 / 版本 | KUAL 是否安装及其版本待确认 |
+| CPU 架构 / KOReader 安装状态、构建与版本 | 待实机确认；不从越狱方式推断阅读宿主已安装 |
 | 原生书架入口、直达插件、退出恢复 | 未执行 |
 | 免费正文、登录、已购正文 | 未执行，分别记录 |
 | 缓存许可与离线阅读 | 未执行 |
