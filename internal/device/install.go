@@ -36,7 +36,7 @@ func command(source string) string {
 }
 func config(source string) string {
 	return `<?xml version="1.0" encoding="UTF-8"?>
-<widget id="` + AppID(source) + `" version="0.1.0" viewmodes="application" xmlns="http://www.w3.org/ns/widgets" xmlns:kindle="http://kindle.amazon.com/ns/widget-extensions">
+<widget id="` + AppID(source) + `" version="0.2.0" viewmodes="application" xmlns="http://www.w3.org/ns/widgets" xmlns:kindle="http://kindle.amazon.com/ns/widget-extensions">
  <name xml:lang="zh">` + Name(source) + `</name><content src="index.html"/>
  <kindle:permissions><kindle:permission name="local-port-access"/></kindle:permissions>
  <kindle:chrome><kindle:asset key="configureSearchBar" value="none"/></kindle:chrome>
@@ -49,8 +49,9 @@ func config(source string) string {
 }
 
 type Installer struct {
-	Root string
-	SQL  func(string) (string, error)
+	Source string // empty selects all legacy entries
+	Root   string
+	SQL    func(string) (string, error)
 }
 
 func (i *Installer) path(path string) string {
@@ -66,7 +67,16 @@ func (i *Installer) sql(query string) (string, error) {
 	}
 	return strings.TrimSpace(string(out)), nil
 }
+func (i *Installer) sources() []string {
+	if i.Source != "" {
+		return []string{i.Source}
+	}
+	return Sources
+}
 func (i *Installer) Preflight() error {
+	if i.Source != "" && !library.ValidSource(i.Source) {
+		return errors.New("未知应用，未修改入口")
+	}
 	for _, p := range []string{"/usr/bin/mesquite", "/usr/bin/sqlite3", "/usr/bin/lipc-set-prop", "/var/local/appreg.db", Bundle + "/bin/kindle-read"} {
 		info, e := os.Stat(i.path(p))
 		if e != nil || !info.Mode().IsRegular() {
@@ -156,7 +166,7 @@ func (i *Installer) apply(changes []change, sql string) error {
 				_ = os.Remove(c.path)
 			}
 		}
-		for _, s := range Sources {
+		for _, s := range i.sources() {
 			_ = os.Remove(i.path("/var/local/mesquite/" + AppID(s)))
 		}
 	}
@@ -192,7 +202,7 @@ func (i *Installer) Install() error {
 	if e := i.Preflight(); e != nil {
 		return e
 	}
-	for _, s := range Sources {
+	for _, s := range i.sources() {
 		if e := i.checkOwned(s); e != nil {
 			return e
 		}
@@ -200,7 +210,7 @@ func (i *Installer) Install() error {
 	var changes []change
 	var sql strings.Builder
 	sql.WriteString("BEGIN IMMEDIATE; INSERT OR IGNORE INTO interfaces(interface) VALUES('application');")
-	for _, s := range Sources {
+	for _, s := range i.sources() {
 		dir := i.path("/var/local/mesquite/" + AppID(s))
 		changes = append(changes, change{path: filepath.Join(dir, ".kindle-read"), next: []byte(owner), mode: 0600}, change{path: filepath.Join(dir, "config.xml"), next: []byte(config(s)), mode: 0644}, change{path: filepath.Join(dir, "index.html"), next: []byte("<!doctype html><meta charset=utf-8><p>请从原生书架重新打开应用。</p>"), mode: 0600}, change{path: i.path("/mnt/us/documents/KindleRead-" + s + ".sh"), next: []byte(Scriptlet(s)), mode: 0755})
 		fmt.Fprintf(&sql, "INSERT OR IGNORE INTO handlerIds(handlerId) VALUES('%s');", AppID(s))
@@ -215,14 +225,14 @@ func (i *Installer) Uninstall() error {
 	if e := i.Preflight(); e != nil {
 		return e
 	}
-	for _, s := range Sources {
+	for _, s := range i.sources() {
 		if e := i.checkOwned(s); e != nil {
 			return e
 		}
 	}
 	var changes []change
 	sql := "BEGIN IMMEDIATE;"
-	for _, s := range Sources {
+	for _, s := range i.sources() {
 		dir := i.path("/var/local/mesquite/" + AppID(s))
 		for _, name := range []string{"config.xml", "index.html", ".kindle-read"} {
 			changes = append(changes, change{path: filepath.Join(dir, name), mode: 0600})
@@ -233,7 +243,7 @@ func (i *Installer) Uninstall() error {
 	if e := i.apply(changes, sql+"COMMIT;"); e != nil {
 		return e
 	}
-	for _, s := range Sources {
+	for _, s := range i.sources() {
 		_ = os.Remove(i.path("/var/local/mesquite/" + AppID(s)))
 	}
 	return nil

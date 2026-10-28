@@ -248,10 +248,13 @@ func run(args []string) error {
 		}
 		return launch(args[1])
 	case "preflight", "install", "uninstall":
-		if len(args) != 1 {
-			return errors.New("此命令不接受额外参数")
+		source := ""
+		if len(args) == 2 && library.ValidSource(args[1]) {
+			source = args[1]
+		} else if len(args) != 1 {
+			return errors.New("可选参数为 qidian、changpei 或 miuread")
 		}
-		i := &device.Installer{Root: "/"}
+		i := &device.Installer{Root: "/", Source: source}
 		var e error
 		if args[0] == "preflight" {
 			e = i.Preflight()

@@ -43,7 +43,7 @@ test('desktop browser: import, read, paginate, change font and reopen at saved a
  const rendered=await page.locator('#page').textContent();assert.ok(rendered.length>0&&before.length>0);
  await page.reload();await page.locator('#reader:not(.hidden)').waitFor();
  assert.equal(await page.locator('#page').textContent(),rendered);
- assert.equal(await page.locator('#page').evaluate(n=>n.scrollHeight<=n.clientHeight),true);
+ assert.equal(await page.locator('#page').evaluate(n=>n.scrollHeight<=n.clientHeight),true, JSON.stringify(await page.evaluate(()=>['page','measure','catalog-open','chapter-heading'].map(id=>{const n=document.getElementById(id),s=getComputedStyle(n),b=n.getBoundingClientRect();return {id,scroll:n.scrollHeight,client:n.clientHeight,w:b.width,h:b.height,y:b.y,font:s.font,line:s.lineHeight};}))));
  for(const id of ['previous','font-down','font-up','next']){
   const box=await page.locator('#'+id).boundingBox();
   assert.ok(box.y+box.height<=1236, id+' must stay on screen');

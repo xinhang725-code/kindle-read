@@ -17,6 +17,7 @@ import (
 	"time"
 
 	qrcode "github.com/skip2/go-qrcode"
+	"github.com/xinhang725-code/kindle-read/internal/changpei"
 	"github.com/xinhang725-code/kindle-read/internal/device"
 	"github.com/xinhang725-code/kindle-read/internal/library"
 	"github.com/xinhang725-code/kindle-read/internal/miuread"
@@ -34,6 +35,7 @@ type App struct {
 	stores                                    map[string]*library.Store
 	network                                   *provider.Network
 	miu                                       *miuread.Client
+	cp                                        *changpei.Client
 	qr                                        string
 }
 
@@ -53,6 +55,13 @@ func New(root, source string) (*App, error) {
 		}
 		a.miu = m
 	}
+	if source == "changpei" {
+		c, e := changpei.Open(root, a.network)
+		if e != nil {
+			return nil, e
+		}
+		a.cp = c
+	}
 	if _, e := a.store(); e != nil {
 		return nil, e
 	}
@@ -60,6 +69,11 @@ func New(root, source string) (*App, error) {
 	return a, nil
 }
 func (a *App) account() string {
+	if a.cp != nil {
+		if id := a.cp.Account().ID; id != "" {
+			return id
+		}
+	}
 	if a.miu != nil {
 		if id := a.miu.Account().ID; id != "" {
 			return id
@@ -84,6 +98,19 @@ func writeJSON(w http.ResponseWriter, status int, data any) {
 	_ = json.NewEncoder(w).Encode(data)
 }
 func fail(w http.ResponseWriter, e error) {
+	var cp *changpei.Error
+	if errors.As(e, &cp) {
+		status := http.StatusBadRequest
+		if cp.Code == "AUTH_REQUIRED" || cp.Code == "AUTH_EXPIRED" {
+			status = http.StatusUnauthorized
+		}
+		if cp.Code == "RATE_LIMITED" {
+			status = http.StatusTooManyRequests
+			w.Header().Set("Retry-After", "60")
+		}
+		writeJSON(w, status, map[string]any{"error": cp.Message, "code": cp.Code, "message": cp.Message, "retryable": cp.Retryable})
+		return
+	}
 	writeJSON(w, http.StatusBadRequest, map[string]string{"error": e.Error()})
 }
 func decode(w http.ResponseWriter, r *http.Request, v any) error {
@@ -124,8 +151,16 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "method not allowed", 405)
 			return
 		}
-		if path == "api/login/cancel" && a.miu != nil {
-			a.miu.Cancel()
+		if path == "api/login/cancel" && (a.miu != nil || a.cp != nil) {
+			if a.miu != nil {
+				a.miu.Cancel()
+			}
+			if a.cp != nil {
+				a.cp.Cancel()
+			}
+			a.mu.Lock()
+			a.qr = ""
+			a.mu.Unlock()
 			writeJSON(w, 200, map[string]bool{"ok": true})
 			return
 		}
@@ -185,6 +220,9 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (a *App) api(w http.ResponseWriter, r *http.Request, path string) {
 	if path == "api/health" {
 		writeJSON(w, 200, map[string]string{"source": a.Source})
+		return
+	}
+	if a.cp != nil && a.changpeiAPI(w, r, path) {
 		return
 	}
 	s, e := a.store()

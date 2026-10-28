@@ -29,6 +29,12 @@
                     if (trial(candidate)) { best = mid; lo = mid + 1; } else { hi = mid - 1; }
                 }
                 if (!best) { if (current.length) { finish(); continue; } throw new Error('viewport too small'); }
+                // Bind Chinese punctuation to its neighbouring character at a
+                // page boundary, just as CSS line-break does within a page.
+                if (offset + points[best] < text.length) {
+                    while (best > 0 && (/^[。，、；：？！）》」』】…]/.test(text.slice(offset + points[best])) || /[（《「『【]$/.test(text.slice(offset, offset + points[best])))) { best--; }
+                    if (!best) { if (current.length) { finish(); continue; } throw new Error('viewport too small for punctuation'); }
+                }
                 current.push({paragraph: i, offset: offset, text: text.slice(offset, offset + points[best])}); offset += points[best];
                 if (offset < text.length) { finish(); }
             }

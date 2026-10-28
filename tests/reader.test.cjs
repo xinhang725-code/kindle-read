@@ -24,3 +24,9 @@ test('empty or too-small viewport cannot loop forever',()=>{
  assert.throws(()=>reader.paginate(['a'],()=>false),/viewport/);
  assert.throws(()=>reader.paginate(['a'],null));
 });
+test('Chinese page boundaries bind closing punctuation and opening brackets without dropping text',()=>{
+ const paragraphs=['甲乙丙，丁戊（己庚）辛壬。癸子：丑寅？！卯辰'];
+ const pages=reader.paginate(paragraphs,s=>Array.from(s).length<=5);
+ assert.equal(pages.flatMap(p=>p.parts).map(p=>p.text).join(''),paragraphs[0]);
+ for(const page of pages){const s=page.parts.map(p=>p.text).join('');assert.ok(!/^[。，、；：？！）》」』】…]/.test(s),s);assert.ok(!/[（《「『【]$/.test(s),s);}
+});

@@ -203,17 +203,34 @@ func (s *Store) chapter(book, id string) error {
 func (s *Store) cachePath(book, chapter string) string {
 	return filepath.Join(s.dir, "cache", Key(book+"\x00"+chapter)+".json")
 }
+
+type Block struct {
+	Type string `json:"t"`
+	Text string `json:"text"`
+}
+
 func (s *Store) PutContent(book, chapter string, paragraphs []string) error {
+	blocks := make([]Block, len(paragraphs))
+	for i, p := range paragraphs {
+		blocks[i] = Block{Type: "p", Text: p}
+	}
+	return s.PutBlocks(book, chapter, blocks)
+}
+func (s *Store) PutBlocks(book, chapter string, blocks []Block) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if e := s.chapter(book, chapter); e != nil {
 		return e
 	}
-	if len(paragraphs) == 0 {
+	if len(blocks) == 0 {
 		return errors.New("正文为空")
 	}
 	size := 0
-	for _, p := range paragraphs {
+	for _, block := range blocks {
+		if block.Type != "p" && block.Type != "note" {
+			return errors.New("不支持的正文块类型")
+		}
+		p := block.Text
 		if !utf8.ValidString(p) {
 			return errors.New("正文编码无效")
 		}
@@ -222,7 +239,7 @@ func (s *Store) PutContent(book, chapter string, paragraphs []string) error {
 	if size == 0 || size > 2<<20 {
 		return errors.New("章节大小超出限制")
 	}
-	b, err := json.Marshal(paragraphs)
+	b, err := json.Marshal(blocks)
 	if err != nil {
 		return err
 	}
@@ -247,7 +264,7 @@ func (s *Store) PutContent(book, chapter string, paragraphs []string) error {
 	}
 	return AtomicWrite(target, b)
 }
-func (s *Store) content(book, chapter string) ([]string, error) {
+func (s *Store) blocks(book, chapter string) ([]Block, error) {
 	if e := s.chapter(book, chapter); e != nil {
 		return nil, e
 	}
@@ -255,9 +272,42 @@ func (s *Store) content(book, chapter string) ([]string, error) {
 	if err != nil {
 		return nil, errors.New("章节尚未缓存")
 	}
-	var p []string
-	if len(b) > 12<<20 || json.Unmarshal(b, &p) != nil || len(p) == 0 {
+	if len(b) > 12<<20 {
 		return nil, errors.New("缓存损坏，请重新下载")
+	}
+	var blocks []Block
+	if json.Unmarshal(b, &blocks) != nil {
+		var legacy []string
+		if json.Unmarshal(b, &legacy) != nil {
+			return nil, errors.New("缓存损坏，请重新下载")
+		}
+		for _, p := range legacy {
+			blocks = append(blocks, Block{Type: "p", Text: p})
+		}
+	}
+	if len(blocks) == 0 {
+		return nil, errors.New("缓存正文为空")
+	}
+	for _, block := range blocks {
+		if (block.Type != "p" && block.Type != "note") || !utf8.ValidString(block.Text) {
+			return nil, errors.New("缓存正文格式不支持")
+		}
+	}
+	return blocks, nil
+}
+func (s *Store) Blocks(book, chapter string) ([]Block, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.blocks(book, chapter)
+}
+func (s *Store) content(book, chapter string) ([]string, error) {
+	blocks, e := s.blocks(book, chapter)
+	if e != nil {
+		return nil, e
+	}
+	p := make([]string, len(blocks))
+	for i, b := range blocks {
+		p[i] = b.Text
 	}
 	return p, nil
 }
@@ -276,7 +326,7 @@ func (s *Store) SaveProgress(p Progress) error {
 	if p.Paragraph < 0 || p.Paragraph >= len(paragraphs) || p.Offset < 0 || p.Offset > len(utf16.Encode([]rune(paragraphs[p.Paragraph]))) {
 		return errors.New("阅读位置无效")
 	}
-	if p.FontSize < 20 || p.FontSize > 48 {
+	if p.FontSize < 18 || p.FontSize > 48 {
 		p.FontSize = 28
 	}
 	n := copyState(s.state)

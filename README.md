@@ -4,7 +4,11 @@
 
 目标体验：Kindle 原生书架上显示「起点阅读」「长佩阅读」「MiuRead」三个入口，点开即可进入各自阅读流程；有记录时优先续读，无记录时进入对应应用书架或登录流程。名称暂定，修改版 MiuRead 的分发名称及上游归属另行标明，不冒充官方版本。
 
-**当前阶段：0.1.0-alpha.1 开发实现。已有独立阅读器、三个入口的安装/启动程序，以及 MiuRead 登录与书架的首批移植；尚未完成 Kindle 实机及三个平台真实访问验证，MiuRead 正文仍未迁移。当前不是可以日常使用的完整版本。**
+**当前开发重点：长佩阅读 0.2.0-alpha.1。** 起点和微信读书工作暂停。本轮加入强制长佩 App 扫码登录、官网榜单/搜索/目录、受权限检查的文字章节、黑白分页界面，以及只注册长佩的安装包。真实账号确认和 KPW5/Vera 实机验收尚未完成，仍是开发测试版。
+
+- [长佩包安装与使用](docs/changpei-installation.md)
+- [低性能设备方案比较与选择](docs/changpei-architecture.md)
+- [长佩协议观察与验证边界](docs/changpei-protocol-evidence.md)
 
 ## 开始开发
 
@@ -15,7 +19,7 @@ npm run test:browser
 sh scripts/build.sh
 ```
 
-本地运行：`sh scripts/go.sh run ./cmd/kindle-read serve --source qidian --data .local-data`。将 `qidian` 改为 `changpei` 或 `miuread` 可打开另外两个应用。网络、文件与运行时由独立 Go 程序处理，界面为适配 Mesquite 的 ES5；安装包不包含 KOReader。
+本地运行：`sh scripts/go.sh run ./cmd/kindle-read serve --source changpei --data .local-data`。将 `changpei` 改为 `qidian` 或 `miuread` 可打开此前的实验入口。网络、文件与运行时由独立 Go 程序处理，界面为适配 Mesquite 的 ES5；安装包不包含 KOReader。
 
 - [实现状态与验证边界](docs/implementation-status.md)
 - [MiuRead 依赖说明与新独立版对照任务](docs/2026-10-28-weread-comparison.md)

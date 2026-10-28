@@ -1,6 +1,6 @@
 # 开发测试包的构建与安装
 
-**这是 M1 开发包，不是已通过 KPW5/Vera 实机验收的版本。** 当前能在电脑浏览器运行阅读核心；起点、长佩在线解析仍为实验状态；MiuRead 的登录/书架代码已移植，真实访问未验证，正文解码尚未完成。包内没有示例书冒充平台作品。
+**当前长佩安装请看 [长佩专用安装说明](changpei-installation.md)。以下保留通用三入口安装方式，包版本为 0.2.0-alpha.1，未通过 KPW5/Vera 实机验收。** 当前能在电脑浏览器运行阅读核心；起点在线解析仍为实验状态，长佩已改用官网 API 和强制扫码登录；MiuRead 的登录/书架代码已移植，真实访问未验证，正文解码尚未完成。包内没有示例书冒充平台作品。
 
 ## 在云环境构建
 
@@ -13,7 +13,7 @@ sh scripts/build.sh
 
 `setup.sh` 校验并安装 Go 1.25.3 到项目 `.tools/`，不会覆盖系统 `/usr/bin/go`。构建依赖 Node/npm、Python3、curl、tar、sha256sum 和 file。Go 缓存放在 `/tmp`。浏览器测试自动使用 `/usr/bin/chromium`；其他环境可设置 `CHROMIUM_PATH` 或按 Playwright 文档安装 Chromium。
 
-产物：`dist/kindle-read-0.1.0-alpha.1-armv7.zip`、`dist/kindle-read-source.tar.gz`、`dist/SHA256SUMS`。ARM 程序静态编译，不依赖 Kindle 上的 Go、Node、Python、KUAL 或 KOReader。
+产物：`dist/kindle-read-0.2.0-alpha.1-armv7.zip`、`dist/kindle-read-source.tar.gz`、`dist/SHA256SUMS`。ARM 程序静态编译，不依赖 Kindle 上的 Go、Node、Python、KUAL 或 KOReader。
 
 本地运行：
 

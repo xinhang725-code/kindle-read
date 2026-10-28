@@ -50,6 +50,40 @@ func TestInstallThreeIndependentEntriesAndPreserveUnknownFiles(t *testing.T) {
 		t.Fatal("file changed")
 	}
 }
+func TestSelectedInstallAndUninstallNeverTouchOtherApps(t *testing.T) {
+	i := prepare(t)
+	i.Source = "changpei"
+	other := i.path("/mnt/us/documents/KindleRead-qidian.sh")
+	os.MkdirAll(filepath.Dir(other), 0755)
+	os.WriteFile(other, []byte("user-owned"), 0600)
+	var queries []string
+	i.SQL = func(q string) (string, error) { queries = append(queries, q); return "", nil }
+	if e := i.Install(); e != nil {
+		t.Fatal(e)
+	}
+	if b, e := os.ReadFile(i.path("/mnt/us/documents/KindleRead-changpei.sh")); e != nil || !strings.Contains(string(b), "launch changpei") {
+		t.Fatal("missing Changpei", e)
+	}
+	if _, e := os.Stat(i.path("/mnt/us/documents/KindleRead-miuread.sh")); !os.IsNotExist(e) {
+		t.Fatal("installed another app")
+	}
+	if e := i.Uninstall(); e != nil {
+		t.Fatal(e)
+	}
+	if b, _ := os.ReadFile(other); string(b) != "user-owned" {
+		t.Fatal("changed unrelated entry")
+	}
+	for _, q := range queries {
+		if strings.Contains(q, AppID("qidian")) || strings.Contains(q, AppID("miuread")) {
+			t.Fatal("changed unrelated registration")
+		}
+	}
+	i.Source = "unknown"
+	queries = nil
+	if e := i.Install(); e == nil || len(queries) > 0 {
+		t.Fatal("invalid source must fail before SQL")
+	}
+}
 func TestFailedRegistrationRollsBackFiles(t *testing.T) {
 	i := prepare(t)
 	i.SQL = func(query string) (string, error) {
