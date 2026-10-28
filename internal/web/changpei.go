@@ -170,6 +170,10 @@ func (a *App) changpeiAPI(w http.ResponseWriter, r *http.Request, path string) b
 			fail(w, &changpei.Error{Code: "NOT_FOUND", Message: "章节不存在"})
 			return true
 		}
+		if chapter.Locked {
+			fail(w, &changpei.Error{Code: "CHAPTER_LOCKED", Message: "目录显示此章不可阅读或需要授权，请在官方 App 处理后刷新目录"})
+			return true
+		}
 		blocks, e := s.Blocks(bookID, chID)
 		if e != nil {
 			content, err := a.cp.Chapter(r.Context(), book, chID)

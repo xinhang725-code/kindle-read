@@ -164,6 +164,11 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			writeJSON(w, 200, map[string]bool{"ok": true})
 			return
 		}
+		// Refresh must invalidate the old QR immediately, before waiting behind
+		// an in-flight long poll that could otherwise commit its approval.
+		if path == "api/login/start" && a.cp != nil {
+			a.cp.Cancel()
+		}
 		a.mu.Lock()
 		defer a.mu.Unlock()
 		a.api(w, r, path)

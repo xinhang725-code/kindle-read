@@ -2,7 +2,7 @@
 (function () {
     'use strict';
     var state, activeBook, currentChapter, paragraphs, blocks = [], pages = [], pageIndex = 0, fontSize = 28, logicalAnchor = null;
-    var loginRequired = false, toolsVisible = false, shelfPage = 0, catalogPage = 0, searchPage = 1, rankings = [], rankIndex = 0, browseMode = 'rank';
+    var loginRequired = false, toolsVisible = false, shelfPage = 0, catalogPage = 0, searchPage = 1, rankings = [], rankIndex = 0, browseMode = 'rank', searchBatch = null, searchOffset = 0;
     var spacing = 1.75, margin = 26, bold = false, indent = true;
     var view = 'shelf', busy = false, loginGeneration = 0, loginAttempt = 0, loginTimer, loginOTP = '', loginStopped = true;
     function el(id) { return document.getElementById(id); }
@@ -23,13 +23,13 @@
     function request(method, path, data, done) {
         var xhr = new XMLHttpRequest(); xhr.open(method, 'api/' + path, true); xhr.timeout = 30000;
         xhr.setRequestHeader('X-Kindle-Read', '1'); xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.onload = function () { var value; try { value = JSON.parse(xhr.responseText); } catch (e) { done('服务响应异常，请从原生书架重新打开应用。'); return; } if (xhr.status !== 200) { done(value.error || value.message || '请求失败', value); } else { done(null, value); } };
+        xhr.onload = function () { var value; try { value = JSON.parse(xhr.responseText); } catch (e) { done('服务响应异常，请从原生书架重新打开应用。'); return; } if (xhr.status !== 200) { done(value.error || value.message || '请求失败', value); if (isCP() && (value.code === 'AUTH_REQUIRED' || value.code === 'AUTH_EXPIRED')) { busy = false; cancelLogin(function () {}); loginScreen(false); message(value.message || value.error || '请重新扫码登录', true); } } else { done(null, value); } };
         xhr.onerror = xhr.ontimeout = function () { done('连接中断或超时。已保存的位置会保留，请重试或从原生书架重新打开。'); };
         xhr.send(data ? JSON.stringify(data) : null); return xhr;
     }
     function action(method, path, data, done) {
         if (busy) { return; } busy = true; message('正在处理…');
-        request(method, path, data, function (err, value) { busy = false; el('status').className = 'hidden'; if (err) { if (isCP() && value && (value.code === 'AUTH_REQUIRED' || value.code === 'AUTH_EXPIRED')) { cancelLogin(function () {}); loginScreen(false); } message(err, true); if (path === 'state') { button(el('status'), '重新连接', function () { reload(true); }); } return; } done(value); });
+        request(method, path, data, function (err, value) { busy = false; el('status').className = 'hidden'; if (err) { message(err, true); if (path === 'state') { button(el('status'), '重新连接', function () { reload(true); }); } return; } done(value); });
     }
     function button(parent, text, click, cls) { var b = document.createElement('button'); b.type = 'button'; b.textContent = text; b.onclick = click; if (cls) { b.className = cls; } parent.appendChild(b); return b; }
     function hasChapter(book, id) { var i; for (i = 0; i < book.chapters.length; i++) { if (book.chapters[i].id === id) { return true; } } return false; }
@@ -44,7 +44,7 @@
     function pager(node, page, total, change) { clear(node); if (total < 2) { return; } var previous = button(node, '上一页', function () { change(page - 1); }); previous.disabled = page === 0; var text = document.createElement('span'); text.textContent = (page + 1) + ' / ' + total; node.appendChild(text); var next = button(node, '下一页', function () { change(page + 1); }); next.disabled = page + 1 >= total; }
     function logout() { if (window.confirm('退出账号并清理本账号在此应用中的缓存与进度？')) { action('POST', 'logout', {}, function () { shelfPage = 0; reload(false); }); } }
     function renderShelf() {
-        var bar = el('toolbar'), books = el('books'), i, perPage = window.innerWidth < 600 ? 4 : 8, start; clear(bar); clear(books); el('shelf-name').textContent = state.name;
+        var bar = el('toolbar'), books = el('books'), i, perPage = (window.innerWidth < 600 ? 2 : 4) * Math.max(1, Math.min(2, Math.floor((window.innerHeight - 480) / 252))), start; clear(bar); clear(books); el('shelf-name').textContent = state.name;
         if (isCP()) {
             el('intro').textContent = (state.account.name || '长佩读者') + ' · 此设备的阅读书架';
             button(bar, '逛书城', discover); button(bar, '搜索作品', searchOpen); button(bar, '添加作品', function () { show('add'); }); button(bar, '退出账号', logout);
@@ -72,10 +72,21 @@
     function rememberBook(book) { var i; for (i = 0; i < state.library.books.length; i++) { if (state.library.books[i].id === book.id) { state.library.books[i] = book; return; } } state.library.books.push(book); }
     function addBook(id) { action('POST', 'book', {url: id}, function (book) { rememberBook(book); catalogPage = 0; catalog(book); }); }
     function results(books) { var list = el('results'), i; clear(list); if (!books.length) { list.textContent = '暂时没有找到作品。'; } for (i = 0; i < books.length; i++) { (function (book) { var b = button(list, '', function () { addBook(book.id); }, 'book'), title = document.createElement('span'), detail = document.createElement('span'); title.className = 'book-title'; title.textContent = book.title; detail.className = 'book-detail'; detail.textContent = book.author + ' · 加入书架并打开目录'; b.appendChild(title); b.appendChild(detail); }(books[i])); } }
-    function renderRank() { var bar = el('rank-tabs'), i, rank = rankings[rankIndex]; clear(bar); clear(el('search-pages')); if (!rank) { results([]); return; } for (i = 0; i < rankings.length; i++) { (function (idx) { button(bar, rankings[idx].title, function () { rankIndex = idx; searchPage = 1; renderRank(); }, idx === rankIndex ? 'selected' : ''); }(i)); } var size = Math.max(3, Math.min(5, Math.floor((window.innerHeight - 350) / 112))); results(rank.books.slice((searchPage - 1) * size, searchPage * size)); pager(el('search-pages'), searchPage - 1, Math.ceil(rank.books.length / size), function (p) { searchPage = p + 1; renderRank(); }); }
+    function renderRank() { var bar = el('rank-tabs'), i, rank = rankings[rankIndex]; clear(bar); clear(el('search-pages')); if (!rank) { results([]); return; } for (i = 0; i < rankings.length; i++) { (function (idx) { button(bar, rankings[idx].title, function () { rankIndex = idx; searchPage = 1; renderRank(); }, idx === rankIndex ? 'selected' : ''); }(i)); } var size = searchSize(); results(rank.books.slice((searchPage - 1) * size, searchPage * size)); pager(el('search-pages'), searchPage - 1, Math.ceil(rank.books.length / size), function (p) { searchPage = p + 1; renderRank(); }); }
     function discover() { browseMode = 'rank'; show('browse'); el('browse-title').textContent = '书城'; el('search-form').className = 'hidden'; if (rankings.length) { renderRank(); return; } action('POST', 'discover', {}, function (value) { rankings = value.rankings; rankIndex = 0; searchPage = 1; renderRank(); }); }
-    function searchOpen() { browseMode = 'search'; searchPage = 1; show('browse'); el('browse-title').textContent = '搜索作品'; el('search-form').className = ''; clear(el('rank-tabs')); clear(el('results')); clear(el('search-pages')); }
-    function searchBooks() { action('POST', 'search', {query: el('search-query').value, page: searchPage}, function (value) { results(value.books); pager(el('search-pages'), searchPage - 1, Math.ceil(value.count / 10), function (p) { searchPage = p + 1; searchBooks(); }); }); }
+    function searchOpen() { browseMode = 'search'; searchPage = 1; searchBatch = null; searchOffset = 0; show('browse'); el('browse-title').textContent = '搜索作品'; el('search-form').className = ''; clear(el('rank-tabs')); clear(el('results')); clear(el('search-pages')); }
+    function searchSize() { return Math.max(1, Math.min(5, Math.floor((window.innerHeight - el('results').getBoundingClientRect().top - 110) / 154))); }
+    function renderSearch() {
+        if (!searchBatch) { return; } el('search-form').className = 'hidden'; clear(el('rank-tabs'));
+        button(el('rank-tabs'), '修改搜索', searchOpen);
+        var size = searchSize(), list = searchBatch.books, count = searchBatch.count, globalStart = (searchPage - 1) * 10 + searchOffset, node = el('search-pages'), label;
+        results(list.slice(searchOffset, searchOffset + size)); clear(node);
+        if (!list.length) { return; }
+        var previous = button(node, '上一页', function () { if (searchOffset > 0) { searchOffset = Math.max(0, searchOffset - size); renderSearch(); } else { searchPage--; searchBooks(true); } }); previous.disabled = searchPage === 1 && searchOffset === 0;
+        label = document.createElement('span'); label.textContent = (globalStart + 1) + '–' + (globalStart + Math.min(size, list.length - searchOffset)) + ' / ' + count + ' 本'; node.appendChild(label);
+        var next = button(node, '下一页', function () { if (searchOffset + size < list.length) { searchOffset += size; renderSearch(); } else { searchPage++; searchBooks(false); } }); next.disabled = globalStart + Math.min(size, list.length - searchOffset) >= count;
+    }
+    function searchBooks(atEnd) { action('POST', 'search', {query: el('search-query').value, page: searchPage}, function (value) { searchBatch = value; searchOffset = 0; renderSearch(); if (atEnd && value.books.length) { var size = searchSize(); searchOffset = Math.floor((value.books.length - 1) / size) * size; renderSearch(); } }); }
     function catalog(book) {
         if (!activeBook || activeBook.id !== book.id) { catalogPage = 0; } activeBook = book; show('catalog'); el('catalog-title').textContent = book.title;
         var list = el('chapters'), bar = el('catalog-actions'), i, perPage = Math.max(4, Math.min(12, Math.floor((window.innerHeight - 350) / 64))), start, saved = state.library.progress[book.id]; clear(list); clear(bar);
@@ -165,7 +176,7 @@
     el('bold-toggle').onclick = function () { if (busy) { return; } bold = !bold; applySettings(); settingButtons(); };
     el('indent-toggle').onclick = function () { if (busy) { return; } indent = !indent; applySettings(); settingButtons(); };
     try { var prefs = JSON.parse(window.localStorage.getItem('changpei-layout')); if (prefs) { if ([1.6,1.75,1.9].indexOf(prefs.spacing) >= 0) { spacing = prefs.spacing; } if ([20,26,32].indexOf(prefs.margin) >= 0) { margin = prefs.margin; } bold = prefs.bold === true; indent = prefs.indent !== false; } } catch (ignore) {}
-    window.onresize = function () { if (view === 'reader' && pages.length && !busy) { var anchor = logicalAnchor; try { layout(anchor); save(function () {}); } catch (e) { message('排版失败，请重新打开章节。', true); } } };
+    window.onresize = function () { if (view === 'browse' && browseMode === 'search' && searchBatch && !busy) { renderSearch(); } if (view === 'reader' && pages.length && !busy) { var anchor = logicalAnchor; try { layout(anchor); save(function () {}); } catch (e) { message('排版失败，请重新打开章节。', true); } } };
     // The helper expires after five minutes without requests. Hidden pages do not keep it alive.
     window.setInterval(function () { if (!document.hidden) { request('GET', 'health', null, function () {}); } }, 30000);
     document.addEventListener('visibilitychange', function () { if (document.hidden && view === 'login') { cancelLogin(function () { el('qr').className = 'hidden'; el('login-status').textContent = '已暂停登录，请刷新二维码。'; }); } });
