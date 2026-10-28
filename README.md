@@ -18,6 +18,7 @@ sh scripts/build.sh
 本地运行：`sh scripts/go.sh run ./cmd/kindle-read serve --source qidian --data .local-data`。将 `qidian` 改为 `changpei` 或 `miuread` 可打开另外两个应用。网络、文件与运行时由独立 Go 程序处理，界面为适配 Mesquite 的 ES5；安装包不包含 KOReader。
 
 - [实现状态与验证边界](docs/implementation-status.md)
+- [MiuRead 依赖说明与新独立版对照任务](docs/2026-10-28-weread-comparison.md)
 - [构建、测试包安装与卸载](docs/installation.md)
 - [许可和上游归属](THIRD_PARTY_NOTICES.md)
 

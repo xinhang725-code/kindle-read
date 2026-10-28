@@ -126,7 +126,9 @@ func ParsePage(source, raw string, data []byte) (library.Book, []string, error) 
 		return library.Book{}, nil, errors.New("页面解析失败")
 	}
 	b := library.Book{ID: library.Key(u.String()), URL: u.String(), Chapters: []library.Chapter{}}
-	var content, catalog *html.Node
+	var content *html.Node
+	var catalogs []*html.Node
+	contentCount := 0
 	var heading string
 	blocked := false
 	walk(root, func(n *html.Node) {
@@ -146,9 +148,10 @@ func ParsePage(source, raw string, data []byte) (library.Book, []string, error) 
 		}
 		if class(n, "read-content") {
 			content = n
+			contentCount++
 		}
 		if attr(n, "id") == "j-catalogWrap" || class(n, "chapter-list") || class(n, "chapter_list") {
-			catalog = n
+			catalogs = append(catalogs, n)
 		}
 		for _, c := range []string{"vip-lock", "paywall", "captcha", "geetest_panel"} {
 			if class(n, c) || attr(n, "id") == c {
@@ -158,6 +161,9 @@ func ParsePage(source, raw string, data []byte) (library.Book, []string, error) 
 	})
 	if blocked {
 		return b, nil, errors.New("页面要求授权、订阅或验证，请在官方客户端处理")
+	}
+	if contentCount > 1 {
+		return b, nil, errors.New("页面存在多份正文，无法确定完整内容，未加入缓存")
 	}
 	if b.Title == "" {
 		b.Title = heading
@@ -174,7 +180,7 @@ func ParsePage(source, raw string, data []byte) (library.Book, []string, error) 
 		return b, p, nil
 	}
 	seen := map[string]bool{}
-	if catalog != nil {
+	for _, catalog := range catalogs {
 		walk(catalog, func(n *html.Node) {
 			if n.Data != "a" {
 				return
@@ -205,7 +211,17 @@ func Fetch(ctx context.Context, network *Network, source, raw string) (library.B
 	if e != nil {
 		return library.Book{}, nil, e
 	}
-	data, e := network.Do(ctx, "GET", u.String(), nil, http.Header{"Accept": []string{"text/html"}})
+	// A redirect can change book/chapter identity. Until canonical IDs are proven
+	// against real platform pages, require the final official URL explicitly.
+	strict := *network
+	client := *network.Client
+	redirected := false
+	client.CheckRedirect = func(*http.Request, []*http.Request) error { redirected = true; return http.ErrUseLastResponse }
+	strict.Client = &client
+	data, e := strict.Do(ctx, "GET", u.String(), nil, http.Header{"Accept": []string{"text/html"}})
+	if redirected {
+		return library.Book{}, nil, errors.New("链接发生跳转，请使用浏览器中最终的官方作品或章节链接")
+	}
 	if e != nil {
 		return library.Book{}, nil, e
 	}

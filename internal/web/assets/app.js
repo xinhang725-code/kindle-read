@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: AGPL-3.0-only */
 (function () {
     'use strict';
-    var state, activeBook, currentChapter, paragraphs, pages = [], pageIndex = 0, fontSize = 28;
-    var view = 'shelf', busy = false, loginGeneration = 0, loginTimer, loginOTP = '', loginStopped = true;
+    var state, activeBook, currentChapter, paragraphs, pages = [], pageIndex = 0, fontSize = 28, logicalAnchor = null;
+    var view = 'shelf', busy = false, loginGeneration = 0, loginAttempt = 0, loginTimer, loginOTP = '', loginStopped = true;
     function el(id) { return document.getElementById(id); }
     function clear(node) { while (node.firstChild) { node.removeChild(node.firstChild); } }
     function show(name) { var list = document.querySelectorAll('.view'), i; view = name; for (i = 0; i < list.length; i++) { list[i].className = 'view' + (list[i].id === name ? '' : ' hidden'); } }
@@ -22,9 +22,10 @@
         request(method, path, data, function (err, value) { busy = false; el('status').className = 'hidden'; if (err) { message(err, true); return; } done(value); });
     }
     function button(parent, text, click, cls) { var b = document.createElement('button'); b.type = 'button'; b.textContent = text; b.onclick = click; if (cls) { b.className = cls; } parent.appendChild(b); return b; }
+    function hasChapter(book, id) { var i; for (i = 0; i < book.chapters.length; i++) { if (book.chapters[i].id === id) { return true; } } return false; }
     function reload(resume) {
         action('GET', 'state', null, function (value) { state = value; document.title = value.name; el('app-name').textContent = value.name; renderShelf();
-            if (resume && value.library.last) { var last = value.library.last, i; for (i = 0; i < value.library.books.length; i++) { if (value.library.books[i].id === last.book_id) { openChapter(value.library.books[i], last.chapter_id, last); return; } } }
+            if (resume && value.library.last) { var last = value.library.last, i; for (i = 0; i < value.library.books.length; i++) { if (value.library.books[i].id === last.book_id && hasChapter(value.library.books[i], last.chapter_id)) { openChapter(value.library.books[i], last.chapter_id, last); return; } } }
             show('shelf');
         });
     }
@@ -41,9 +42,10 @@
             button(bar, '添加作品', function () { show('add'); el('book-url').focus(); });
         }
         for (i = 0; i < state.library.books.length; i++) { (function (book) {
-            var b = button(books, '', function () { var p = state.library.progress[book.id]; if (p) { openChapter(book, p.chapter_id, p); } else { catalog(book); } }, 'book');
+            var resume = state.library.progress[book.id]; if (resume && !hasChapter(book, resume.chapter_id)) { resume = null; }
+            var b = button(books, '', function () { if (resume) { openChapter(book, resume.chapter_id, resume); } else { catalog(book); } }, 'book');
             var title = document.createElement('span'), detail = document.createElement('span'); title.className = 'book-title'; title.textContent = book.title; detail.className = 'book-detail';
-            detail.textContent = (book.local ? '本地文本 · ' : '') + (book.author || '') + (state.library.progress[book.id] ? ' · 继续阅读' : ' · ' + (book.chapters.length ? book.chapters.length + ' 章' : '正文待接入'));
+            detail.textContent = (book.local ? '本地文本 · ' : '') + (book.author || '') + (resume ? ' · 继续阅读' : ' · ' + (book.chapters.length ? book.chapters.length + ' 章' : '正文待接入'));
             b.appendChild(title); b.appendChild(detail);
         }(state.library.books[i])); }
     }
@@ -57,7 +59,7 @@
         var height = Math.max(100, window.innerHeight - 76 - 44 - 42 - 72), measure = el('measure');
         el('page').style.height = height + 'px'; measure.style.height = height + 'px'; el('page').style.fontSize = fontSize + 'px'; measure.style.fontSize = fontSize + 'px';
         pages = Reader.paginate(paragraphs, function (text, parts) { fillPage(measure, parts); return measure.scrollHeight <= measure.clientHeight; });
-        pageIndex = Reader.locate(pages, anchor); clear(measure); renderPage();
+        pageIndex = Reader.locate(pages, anchor); logicalAnchor = anchor ? {paragraph: anchor.paragraph, offset: anchor.offset} : (pages.length ? pages[pageIndex].anchor : null); clear(measure); renderPage();
     }
     function renderPage() {
         if (!pages.length) { message('章节没有可显示的正文。', true); return; }
@@ -65,7 +67,7 @@
         el('chapter-title').textContent = currentChapter.title; el('previous').disabled = pageIndex === 0 && chapterIndex() === 0;
         el('next').textContent = pageIndex === pages.length - 1 ? '下一章' : '下一页';
     }
-    function progress() { var a = pages[pageIndex].anchor; return {book_id: activeBook.id, chapter_id: currentChapter.id, paragraph: a.paragraph, offset: a.offset, font_size: fontSize}; }
+    function progress() { var a = logicalAnchor; return {book_id: activeBook.id, chapter_id: currentChapter.id, paragraph: a.paragraph, offset: a.offset, font_size: fontSize}; }
     function save(done) {
         if (view !== 'reader' || !pages.length) { done(); return; }
         var p = progress(); action('POST', 'progress', p, function () { state.library.progress[p.book_id] = p; state.library.last = p; done(); });
@@ -73,34 +75,36 @@
     function openChapter(book, id, anchor, atEnd) {
         action('GET', 'chapter?book=' + encodeURIComponent(book.id) + '&chapter=' + encodeURIComponent(id), null, function (value) {
             activeBook = book; currentChapter = value.chapter; paragraphs = value.paragraphs; fontSize = anchor && anchor.font_size ? anchor.font_size : fontSize; show('reader');
-            try { layout(anchor); if (atEnd) { pageIndex = pages.length - 1; renderPage(); } save(function () {}); } catch (e) { message('无法完成排版，请减小字号或重新打开章节。', true); }
+            try { layout(anchor); if (atEnd) { pageIndex = pages.length - 1; logicalAnchor = pages[pageIndex].anchor; renderPage(); } save(function () {}); } catch (e) { message('无法完成排版，请减小字号或重新打开章节。', true); }
         });
     }
     function chapterIndex() { var i; for (i = 0; i < activeBook.chapters.length; i++) { if (activeBook.chapters[i].id === currentChapter.id) { return i; } } return 0; }
     function turn(delta) {
         if (busy || !pages.length) { return; }
-        var next = pageIndex + delta, old = pageIndex, index;
+        var next = pageIndex + delta, old = pageIndex, oldAnchor = logicalAnchor, index;
         if (next >= 0 && next < pages.length) {
-            pageIndex = next; renderPage(); var p = progress(); busy = true;
-            request('POST', 'progress', p, function (err) { busy = false; if (err) { pageIndex = old; renderPage(); message('翻页位置未保存：' + err, true); } else { state.library.progress[p.book_id] = p; state.library.last = p; } });
+            pageIndex = next; logicalAnchor = pages[pageIndex].anchor; renderPage(); var p = progress(); busy = true;
+            request('POST', 'progress', p, function (err) { busy = false; if (err) { pageIndex = old; logicalAnchor = oldAnchor; renderPage(); message('翻页位置未保存：' + err, true); } else { state.library.progress[p.book_id] = p; state.library.last = p; } });
         } else { index = chapterIndex() + delta; if (index < 0 || index >= activeBook.chapters.length) { message(delta > 0 ? '已到目录末尾。' : '已到书籍开头。', true); return; } save(function () { openChapter(activeBook, activeBook.chapters[index].id, null, delta < 0); }); }
     }
-    function changeFont(delta) { if (busy || !pages.length) { return; } var anchor = pages[pageIndex].anchor; fontSize = Math.max(20, Math.min(48, fontSize + delta)); try { layout(anchor); save(function () {}); } catch (e) { message('当前字号无法排版，请减小字号。', true); } }
+    function changeFont(delta) { if (busy || !pages.length) { return; } var anchor = logicalAnchor; fontSize = Math.max(20, Math.min(48, fontSize + delta)); try { layout(anchor); save(function () {}); } catch (e) { message('当前字号无法排版，请减小字号。', true); } }
     function syncShelf() { action('POST', 'shelf', {}, function () { reload(false); }); }
     function pollLogin() {
         if (loginStopped) { return; }
-        request('POST', 'login/poll', {generation: loginGeneration, otp: loginOTP}, function (err, result) {
-            if (loginStopped) { return; }
+        var attempt = loginAttempt, generation = loginGeneration;
+        request('POST', 'login/poll', {generation: generation, otp: loginOTP}, function (err, result) {
+            if (loginStopped || attempt !== loginAttempt || generation !== loginGeneration) { return; }
             if (err) { loginStopped = true; message(err, true); return; }
             if (result.state === 'ready') { loginStopped = true; syncShelf(); return; }
             if (result.state === 'otp') { el('otp-form').className = ''; el('login-status').textContent = '请输入手机上显示的验证码。'; return; }
-            loginTimer = window.setTimeout(pollLogin, 2000);
+            loginTimer = window.setTimeout(function () { if (attempt === loginAttempt) { pollLogin(); } }, 2000);
         });
     }
     function startLogin() {
-        action('POST', 'login/start', {}, function (value) { loginGeneration = value.generation; loginOTP = ''; loginStopped = false; el('qr').src = value.url + '?generation=' + value.generation; el('otp-form').className = 'hidden'; el('login-status').textContent = '用微信扫描二维码并确认授权。'; show('login'); pollLogin(); });
+        if (busy) { return; } var attempt = ++loginAttempt; loginStopped = true; window.clearTimeout(loginTimer);
+        action('POST', 'login/start', {}, function (value) { if (attempt !== loginAttempt) { return; } loginGeneration = value.generation; loginOTP = ''; loginStopped = false; el('qr').src = value.url + '?generation=' + value.generation; el('otp-form').className = 'hidden'; el('login-status').textContent = '用微信扫描二维码并确认授权。'; show('login'); pollLogin(); });
     }
-    function cancelLogin(done) { loginStopped = true; window.clearTimeout(loginTimer); request('POST', 'login/cancel', {}, function () { done(); }); }
+    function cancelLogin(done) { var attempt = ++loginAttempt; loginStopped = true; window.clearTimeout(loginTimer); request('POST', 'login/cancel', {}, function () { if (attempt === loginAttempt) { done(); } }); }
     el('back').onclick = function () { if (view === 'login') { cancelLogin(function () { reload(false); }); return; } save(function () { reload(false); }); };
     el('exit').onclick = function () { save(function () { action('POST', 'exit', {}, function () { message('已保存阅读位置。可返回 Kindle 书架。', true); }); }); };
     el('local-open').onclick = function () { show('local'); };
@@ -110,7 +114,7 @@
     el('catalog-open').onclick = function () { save(function () { catalog(activeBook); }); };
     el('login-cancel').onclick = function () { cancelLogin(function () { reload(false); }); };
     el('otp-form').onsubmit = function (e) { e.preventDefault(); loginOTP = el('otp').value; el('otp-form').className = 'hidden'; pollLogin(); };
-    window.onresize = function () { if (view === 'reader' && pages.length && !busy) { var anchor = pages[pageIndex].anchor; try { layout(anchor); save(function () {}); } catch (e) { message('排版失败，请重新打开章节。', true); } } };
+    window.onresize = function () { if (view === 'reader' && pages.length && !busy) { var anchor = logicalAnchor; try { layout(anchor); save(function () {}); } catch (e) { message('排版失败，请重新打开章节。', true); } } };
     // The helper expires after five minutes without requests. Hidden pages do not keep it alive.
     window.setInterval(function () { if (!document.hidden) { request('GET', 'health', null, function () {}); } }, 30000);
     document.addEventListener('visibilitychange', function () { if (document.hidden && view === 'login') { cancelLogin(function () {}); } });

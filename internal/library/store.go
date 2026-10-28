@@ -43,6 +43,7 @@ type State struct {
 	Books    []Book              `json:"books"`
 	Last     *Progress           `json:"last,omitempty"`
 	Progress map[string]Progress `json:"progress"`
+	Detached map[string]Progress `json:"detached_progress,omitempty"`
 }
 type Store struct {
 	mu        sync.Mutex
@@ -150,6 +151,22 @@ func (s *Store) PutBook(book Book) error {
 	}
 	if !found {
 		n.Books = append(n.Books, book)
+	}
+	if previous, ok := n.Progress[book.ID]; ok && !seen[previous.ChapterID] {
+		if n.Detached == nil {
+			n.Detached = map[string]Progress{}
+		}
+		n.Detached[book.ID] = previous
+		delete(n.Progress, book.ID)
+		if n.Last != nil && n.Last.BookID == book.ID {
+			n.Last = nil
+		}
+	}
+	if previous, ok := n.Detached[book.ID]; ok && seen[previous.ChapterID] {
+		if _, active := n.Progress[book.ID]; !active {
+			n.Progress[book.ID] = previous
+		}
+		delete(n.Detached, book.ID)
 	}
 	return s.commit(n)
 }

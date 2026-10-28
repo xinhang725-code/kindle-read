@@ -1,7 +1,9 @@
 """Create a development USB package and its exact corresponding source. No user data."""
 from pathlib import Path
 import hashlib
+import gzip
 import io
+import json
 import os
 import subprocess
 import sys
@@ -13,13 +15,29 @@ stage = Path(sys.argv[1])
 go_root = Path(sys.argv[2])
 dist = root / 'dist'
 source = dist / 'kindle-read-source.tar.gz'
+revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
+epoch = int(subprocess.check_output(['git', 'log', '-1', '--format=%ct'], cwd=root, text=True).strip())
+build_info = json.dumps({'version': '0.1.0-alpha.1', 'revision': revision,
+                        'dirty': bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=root)),
+                        'go': '1.25.3', 'target': 'linux/arm GOARM=7 CGO_ENABLED=0'}, indent=2).encode()
 entries = ['cmd', 'internal', 'tests', 'scripts', 'docs', 'third_party', '.superpowers', '.gitignore',
            'README.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md', 'go.mod', 'go.sum',
            'package.json', 'package-lock.json']
-with tarfile.open(source, 'w:gz') as archive:
-    for entry in entries:
-        archive.add(root / entry, arcname='kindle-read/' + entry)
-    archive.add(stage / 'vendor', arcname='kindle-read/vendor')
+def normalize(info):
+    info.uid = info.gid = 0
+    info.uname = info.gname = ''
+    info.mtime = epoch
+    info.mode = 0o755 if info.isdir() or info.mode & 0o111 else 0o644
+    return info
+
+with source.open('wb') as output, gzip.GzipFile(filename='', mode='wb', fileobj=output, mtime=epoch) as compressed:
+    with tarfile.open(fileobj=compressed, mode='w') as archive:
+        for entry in entries:
+            archive.add(root / entry, arcname='kindle-read/' + entry, filter=normalize)
+        archive.add(stage / 'vendor', arcname='kindle-read/vendor', filter=normalize)
+        info = normalize(tarfile.TarInfo('kindle-read/BUILD.json'))
+        info.size = len(build_info)
+        archive.addfile(info, io.BytesIO(build_info))
 
 target = dist / 'kindle-read-0.1.0-alpha.1-armv7.zip'
 def put(z, name, data, executable=False):
@@ -30,6 +48,7 @@ def put(z, name, data, executable=False):
 
 with zipfile.ZipFile(target, 'w') as archive:
     base = 'extensions/kindle-read/'
+    put(archive, base + 'BUILD.json', build_info)
     put(archive, base + 'bin/kindle-read', (dist / 'kindle-read-armv7').read_bytes(), True)
     put(archive, base + 'source.tar.gz', source.read_bytes())
     for name in ['LICENSE', 'THIRD_PARTY_NOTICES.md']:

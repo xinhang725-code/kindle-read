@@ -114,11 +114,17 @@ func headers() http.Header {
 	return http.Header{"Referer": []string{base + "/r/weread-skills"}, "Origin": []string{base}, "Accept": []string{"application/json"}}
 }
 func request(ctx context.Context, n *provider.Network, method, path string, payload any) (map[string]json.RawMessage, error) {
+	return requestWithHeaders(ctx, n, method, path, payload, nil)
+}
+func requestWithHeaders(ctx context.Context, n *provider.Network, method, path string, payload any, extra http.Header) (map[string]json.RawMessage, error) {
 	var b []byte
 	if payload != nil {
 		b, _ = json.Marshal(payload)
 	}
 	h := headers()
+	for key, values := range extra {
+		h[key] = values
+	}
 	if payload != nil {
 		h.Set("Content-Type", "application/json")
 	}
@@ -136,6 +142,9 @@ func request(ctx context.Context, n *provider.Network, method, path string, payl
 		}
 	}
 	return m, nil
+}
+func pinFingerprint(n *provider.Network, fingerprint string) {
+	n.Client.Jar.SetCookies(baseURL, []*http.Cookie{{Name: "wr_fp", Value: fingerprint, Path: "/", Secure: true}})
 }
 func safeCode(s string) string {
 	if regexp.MustCompile(`^-?[0-9]{1,9}$`).MatchString(s) {
@@ -165,12 +174,14 @@ func (c *Client) Start(ctx context.Context) (Login, error) {
 	requestCtx, cancel := context.WithCancel(ctx)
 	c.cancel = cancel
 	c.mu.Unlock()
-	n.Client.Jar.SetCookies(baseURL, []*http.Cookie{{Name: "wr_fp", Value: fp, Path: "/", Secure: true}})
+	pinFingerprint(n, fp)
 	_, e := n.Do(requestCtx, "GET", base+"/r/weread-skills", nil, headers())
+	pinFingerprint(n, fp)
 	if e != nil {
 		return Login{}, e
 	}
 	m, e := request(requestCtx, n, "GET", "/api/auth/getLoginUid", nil)
+	pinFingerprint(n, fp)
 	if e != nil {
 		return Login{}, e
 	}
@@ -197,7 +208,9 @@ func (c *Client) Poll(ctx context.Context, gen uint64, otp string) (Login, error
 	if otp != "" && !regexp.MustCompile(`^[0-9]{4}$`).MatchString(otp) {
 		return Login{}, errors.New("请输入手机显示的四位验证码")
 	}
+	pinFingerprint(n, fp)
 	m, e := request(ctx, n, "GET", "/api/auth/getLoginInfo?uid="+url.QueryEscape(uid)+"&otp="+url.QueryEscape(otp), nil)
+	pinFingerprint(n, fp)
 	if e != nil {
 		return Login{}, e
 	}
@@ -222,7 +235,8 @@ func (c *Client) Poll(ctx context.Context, gen uint64, otp string) (Login, error
 		cookies = append(cookies, &http.Cookie{Name: "wr_rt", Value: url.QueryEscape(rt), Path: "/", Secure: true})
 	}
 	n.Client.Jar.SetCookies(baseURL, cookies)
-	user, e := request(ctx, n, "GET", "/api/userInfo?userVid="+url.QueryEscape(vid), nil)
+	user, e := requestWithHeaders(ctx, n, "GET", "/api/userInfo?userVid="+url.QueryEscape(vid), nil, http.Header{"X-Vid": []string{vid}, "X-Skey": []string{key}})
+	pinFingerprint(n, fp)
 	if e != nil {
 		return Login{}, e
 	}

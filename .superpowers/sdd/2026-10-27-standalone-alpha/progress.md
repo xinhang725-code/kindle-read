@@ -12,3 +12,11 @@ Plan: docs/superpowers/plans/2026-10-27-standalone-alpha.md
 - 云配置：安装脚本与开始说明已保存为草稿（requires_publish=true），与域名草稿一同待用户在环境设置保存/发布；未阻塞独立开发。
 - 提交策略：初始实现的存储、来源、服务和设备接口互相依赖，作为一个可运行 alpha 提交，再按最终 reviewer 结果单独提交修复。没有调用技能的本地辅助脚本，账本手工记录。
 - 任务 5 开始：按 requesting-code-review / executing-plans 请求最终独立只读复核。设备/平台未验收不被登记为通过。
+- 首个实现提交：24cb55d。Reviewer（gpt-6-astra，独立上下文）复核 54d0faa..24cb55d；无 Critical，4 个 Important，另记录父代理已发现的认证契约问题。
+- Review ruling：目录最后一个容器覆盖前文、失效续读入口、重排位置漂移、旧登录回调污染新尝试，均用新增测试复现后修复。认证指纹/请求头同样先观察失败再修复。Minor 的设计文档旧阶段说明已更新。
+- Declined-to-judge 裁定：真实起点/长佩、任意付费/挑战变体与重定向身份、Kindle/Vera/WebKit/休眠/功耗、MiuRead 内容/E-Ink/续期及其他 M2–M4 功能，均保留为待验证或未实现，不能宣布通过。当前无平台样本支撑更多页面保证。
+- Declined-to-judge 裁定：账号加密/USB 隔离明确未提供；跨文件/SQLite 断电与持续磁盘故障下的恢复无保证，作为当前限制保留。打包内容/源码/校验由主代理独立验证；后续修复由对应回归和全量检查验证，不要求二次 reviewer。
+- 重定向身份补充裁定：无需真实平台也可验证“另一章响应被记在原章 ID”风险；新增受控 HTTP 边界测试观察失败。公开 HTML Fetch 现拒绝跳转并提示使用最终官方链接，避免身份混用；真实站点 canonical 规则仍待验证。
+- 2026-10-28 用户新信息：已有无 KOReader 的 Kindle 微信读书软件，给出两个 Drive 包，要求先检查并对标 MiuRead/Android 后补功能。优先评估已有软件，当前代码保留；不把两份尚未读取的包判断为有缺陷。
+- Drive 工具当前不可用，两个公开分享页均被云代理 CONNECT 403 拦截。保留六个已有域名，新增 drive.google.com / drive.usercontent.google.com 到配置草稿；已说明需用户保存/发布。比较基线与依赖解释见 docs/2026-10-28-weread-comparison.md。
+- 截至新信息到达前的修复验证：Go race/vet、4 个 Node 测试、4 个浏览器测试已通过。未因此声称用户提供的软件已被检查或功能已补齐。

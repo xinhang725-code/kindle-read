@@ -104,3 +104,37 @@ func TestIncomingAndReturnedBooksCannotMutateCommittedState(t *testing.T) {
 		t.Fatal("external slice mutated committed state")
 	}
 }
+
+func TestCatalogRefreshKeepsExistingPositionAndInvalidatesRemovedChapter(t *testing.T) {
+	s, _ := Open(t.TempDir(), "qidian", "guest")
+	book := exampleBook()
+	s.PutBook(book)
+	s.PutContent("same", "one", []string{"段落"})
+	s.SaveProgress(Progress{BookID: "same", ChapterID: "one", Offset: 1})
+	book.Chapters = append([]Chapter{{ID: "zero", Title: "序"}}, book.Chapters...)
+	if e := s.PutBook(book); e != nil {
+		t.Fatal(e)
+	}
+	if s.Snapshot().Last == nil || s.Snapshot().Last.Offset != 1 {
+		t.Fatal("catalog reorder lost a still-valid anchor")
+	}
+	book.Chapters = []Chapter{{ID: "zero", Title: "序"}}
+	if e := s.PutBook(book); e != nil {
+		t.Fatal(e)
+	}
+	if s.Snapshot().Last != nil {
+		t.Fatal("resume still points at a removed chapter")
+	}
+	if _, ok := s.Snapshot().Progress["same"]; ok {
+		t.Fatal("book still has an unusable resume link")
+	}
+	if s.Snapshot().Detached["same"].Offset != 1 {
+		t.Fatal("temporary catalog change destroyed recoverable bookmark")
+	}
+	if e := s.PutBook(exampleBook()); e != nil {
+		t.Fatal(e)
+	}
+	if s.Snapshot().Progress["same"].Offset != 1 {
+		t.Fatal("returning chapter did not restore bookmark")
+	}
+}

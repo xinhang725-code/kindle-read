@@ -119,3 +119,75 @@ func TestLogoutClearsSessionAndPendingLogin(t *testing.T) {
 		t.Fatal("unauthenticated shelf accepted")
 	}
 }
+
+func TestQRKeepsInstallationFingerprintAndUsesUpstreamVerificationHeaders(t *testing.T) {
+	c := fixture(t, t.TempDir())
+	fp := c.Fingerprint()
+	underlying := c.network.Client.Transport
+	c.network.Client.Transport = transport(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/api/auth/getLoginUid" || r.URL.Path == "/api/auth/getLoginInfo" {
+			cookie, e := r.Cookie("wr_fp")
+			if e != nil || cookie.Value != fp {
+				t.Error("server replaced installation fingerprint")
+			}
+		}
+		if r.URL.Path == "/api/userInfo" && (r.Header.Get("X-Vid") != "42" || r.Header.Get("X-Skey") != "fixture-access") {
+			t.Error("missing upstream user verification headers")
+		}
+		res, e := underlying.RoundTrip(r)
+		if e == nil {
+			res.Header.Add("Set-Cookie", "wr_fp=1; Path=/; Secure")
+		}
+		return res, e
+	})
+	q, e := c.Start(context.Background())
+	if e != nil {
+		t.Fatal(e)
+	}
+	if _, e = c.Poll(context.Background(), q.Generation, ""); e != nil {
+		t.Fatal(e)
+	}
+	for _, cookie := range c.auth.Cookies {
+		if cookie.Name == "wr_fp" && cookie.Value != fp {
+			t.Fatal("persisted a response fingerprint")
+		}
+	}
+}
+
+func TestOTPAndCancellationDuringAccountVerification(t *testing.T) {
+	c := fixture(t, t.TempDir())
+	underlying := c.network.Client.Transport
+	entered, release := make(chan struct{}), make(chan struct{})
+	c.network.Client.Transport = transport(func(r *http.Request) (*http.Response, error) {
+		if r.URL.Path == "/api/auth/getLoginInfo" && r.URL.Query().Get("otp") == "" {
+			return &http.Response{StatusCode: 200, Header: make(http.Header), Body: io.NopCloser(strings.NewReader(`{"succeed":false,"logicCode":"NEED_OTP"}`))}, nil
+		}
+		if r.URL.Path == "/api/userInfo" {
+			close(entered)
+			<-release
+		}
+		return underlying.RoundTrip(r)
+	})
+	q, e := c.Start(context.Background())
+	if e != nil {
+		t.Fatal(e)
+	}
+	result, e := c.Poll(context.Background(), q.Generation, "")
+	if e != nil || result.State != "otp" {
+		t.Fatalf("%+v %v", result, e)
+	}
+	if _, e = c.Poll(context.Background(), q.Generation, "abcd"); e == nil {
+		t.Fatal("invalid OTP accepted")
+	}
+	done := make(chan error, 1)
+	go func() { _, e := c.Poll(context.Background(), q.Generation, "1234"); done <- e }()
+	<-entered
+	c.Cancel()
+	close(release)
+	if e = <-done; e == nil {
+		t.Fatal("cancelled in-flight verification committed")
+	}
+	if c.Account().ID != "" {
+		t.Fatal("cancelled credentials exposed")
+	}
+}

@@ -67,3 +67,40 @@ func TestNetworkRejectsRedirectAndSanitizesFailures(t *testing.T) {
 		t.Fatalf("%v", e)
 	}
 }
+
+func TestCatalogIncludesAllVolumesAndRejectsAmbiguousBody(t *testing.T) {
+	raw := `<h1>合成作品</h1><div class="chapter-list"><a href="/read-1.html">一</a></div><div class="chapter-list"><a href="/read-2.html">二</a></div>`
+	b, _, e := ParsePage("changpei", "https://www.gongzicp.com/novel-1.html", []byte(raw))
+	if e != nil || len(b.Chapters) != 2 {
+		t.Fatalf("incomplete catalog: %+v %v", b, e)
+	}
+	wrapped := `<div id="j-catalogWrap">` + raw + `</div>`
+	b, _, e = ParsePage("changpei", "https://www.gongzicp.com/novel-1.html", []byte(wrapped))
+	if e != nil || len(b.Chapters) != 2 || b.Chapters[0].Title != "一" {
+		t.Fatalf("nested catalog lost order or duplicated: %+v %v", b, e)
+	}
+	raw = `<h1>章</h1><div class="read-content"><p>正文</p></div><div class="read-content"><p>另一份内容</p></div>`
+	if _, _, e = ParsePage("changpei", "https://www.gongzicp.com/read-1.html", []byte(raw)); e == nil {
+		t.Fatal("ambiguous content silently accepted")
+	}
+}
+
+func TestPublicRedirectCannotCacheAnotherChapterUnderRequestedID(t *testing.T) {
+	n := NewNetwork(Hosts("changpei"))
+	calls := 0
+	n.Client.Transport = roundTrip(func(r *http.Request) (*http.Response, error) {
+		calls++
+		if r.URL.Path == "/read-1.html" {
+			res := response(302, "")
+			res.Header.Set("Location", "https://www.gongzicp.com/read-2.html")
+			return res, nil
+		}
+		return response(200, `<h1>第二章</h1><div class="read-content"><p>另一章正文</p></div>`), nil
+	})
+	if _, _, e := Fetch(context.Background(), n, "changpei", "https://www.gongzicp.com/read-1.html"); e == nil {
+		t.Fatal("redirected chapter accepted with the original identity")
+	}
+	if calls != 1 {
+		t.Fatal("public chapter redirect was followed")
+	}
+}
