@@ -20,3 +20,6 @@ Plan: docs/superpowers/plans/2026-10-27-standalone-alpha.md
 - 2026-10-28 用户新信息：已有无 KOReader 的 Kindle 微信读书软件，给出两个 Drive 包，要求先检查并对标 MiuRead/Android 后补功能。优先评估已有软件，当前代码保留；不把两份尚未读取的包判断为有缺陷。
 - Drive 工具当前不可用，两个公开分享页均被云代理 CONNECT 403 拦截。保留六个已有域名，新增 drive.google.com / drive.usercontent.google.com 到配置草稿；已说明需用户保存/发布。比较基线与依赖解释见 docs/2026-10-28-weread-comparison.md。
 - 截至新信息到达前的修复验证：Go race/vet、4 个 Node 测试、4 个浏览器测试已通过。未因此声称用户提供的软件已被检查或功能已补齐。
+- 2026-10-28 后续：用户已发布网络配置；环境报告 enforced，Drive 改为要求登录而非 CONNECT 403。GitHub main e35b0c4 有 0.3.6-rc.4 文档及摊平文件，但七个核心程序均为空；无其他分支/Tags/Releases 或实现源码。
+- 用户随后直接上传 0.3.6-rc.4 ZIP，并说明主动精简一个大字体。包内 14 个双 ABI ARM 程序完整，静态检查未运行安装脚本或设备程序；字体缺省仍需真机回归。发布说明明确存在原生精确进度、新译文生成、PDF 原版/OCR 边界，个人笔记完整性仍待验证；不能从二进制提示断言所有相关功能不可用。
+- 已修正 ZIP 未标 UTF-8 导致标准解压乱码的问题，清理 macOS 元数据及外层目录；42 个交付文件逐字节不变，删除字体未恢复，核心功能未修改。报告及哈希证据存入 docs/weread-0.3.6-rc.4-audit.md、docs/evidence/weread-0.3.6-rc.4-package.json。对应源码/构建方式仍待提供，不能把包整理或本项目 alpha 当成该软件功能补齐。

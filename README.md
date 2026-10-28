@@ -19,6 +19,7 @@ sh scripts/build.sh
 
 - [实现状态与验证边界](docs/implementation-status.md)
 - [MiuRead 依赖说明与新独立版对照任务](docs/2026-10-28-weread-comparison.md)
+- [用户提供的微信读书 0.3.6-rc.4：包检查、功能差距与补齐条件](docs/weread-0.3.6-rc.4-audit.md)
 - [构建、测试包安装与卸载](docs/installation.md)
 - [许可和上游归属](THIRD_PARTY_NOTICES.md)
 

@@ -1,0 +1,475 @@
+{
+  "date": "2026-10-28",
+  "scope": "Static package inspection only; no execution on Kindle or logged-in service validation.",
+  "input": {
+    "name": "③kindle-weread-0.3.6-rc.4-install 2.zip",
+    "bytes": 15978806,
+    "sha256": "a3834dfde47526e8ea24d55c8b2ccc61a70227b35636022782017169d4c195e4",
+    "zip_crc_passed": true,
+    "zip_entries": 97,
+    "entries_with_utf8_flag": 0
+  },
+  "version": "0.3.6-rc.4",
+  "remote_snapshot": {
+    "repository": "https://github.com/xinhang725-code/kindle-read",
+    "commit": "e35b0c4609c37673a25557ae525150143358baef",
+    "installation_and_changelog_match_package": true,
+    "empty_core_binaries": [
+      "device-info",
+      "fb-session",
+      "framework-session",
+      "fsr-session",
+      "screen-refresh",
+      "script-runtime",
+      "weread_ui"
+    ]
+  },
+  "miuread_baseline": {
+    "repository": "https://github.com/miumiupy98-art/miuread-koreader",
+    "commit": "581f9b660097aa42fe33170098346862cf0a9bbf",
+    "version": "5.9.0-beta.19"
+  },
+  "android_baseline": {
+    "source": "https://sj.qq.com/appdetail/com.tencent.weread",
+    "package": "com.tencent.weread",
+    "listing_version": "10.2.2",
+    "listing_update_unix_seconds": "1790153982",
+    "listing_html_sha256": "3f4a9485b5c59fee42219bcdc84cf7bbf5f04fd18e2c80a3afc831fe75c74b97",
+    "apk_obtained": false,
+    "installed_or_tested": false
+  },
+  "font": {
+    "included": "fonts/AlibabaPuHuiTi-3-55-Regular.ttf",
+    "omitted_relative_to_remote": "LXGWWenKai-Regular.ttf",
+    "omission_authorized_by_user": true,
+    "fallback_strings_present": true,
+    "fallback_device_tested": false
+  },
+  "asset_manifest_verified": [
+    "starting-v2.html",
+    "starting-v2.js",
+    "starting-logo.png"
+  ],
+  "buildable_application_source_present": false,
+  "protected_lua_placeholders": [
+    "weread/bin/launch-window.lua",
+    "weread/bin/power-ready.lua"
+  ],
+  "binaries": [
+    {
+      "path": "weread/bin/kindlepw2/script-runtime",
+      "bytes": 2983960,
+      "sha256": "8948d78e7638f9494cb283a98ee0063a96fc502a62e4e8ec6163201feb796f2c",
+      "elf_class": 32,
+      "machine": "ARM",
+      "flags": "0x5000200",
+      "float_abi": "soft",
+      "dynamic_section_present": false,
+      "symbol_table_present": false
+    },
+    {
+      "path": "weread/bin/kindlepw2/fb-session",
+      "bytes": 54672,
+      "sha256": "b937211e7c4234b661c309d89e9a153c4b3cef2fe1f8e6b21399e5e292e2dd86",
+      "elf_class": 32,
+      "machine": "ARM",
+      "flags": "0x5000200",
+      "float_abi": "soft",
+      "dynamic_section_present": false,
+      "symbol_table_present": false
+    },
+    {
+      "path": "weread/bin/kindlepw2/weread_ui",
+      "bytes": 8172256,
+      "sha256": "2ecfd8f7add8aaecc5c537169ace245f75da1c3c5e817cec5f70fdbb50f60e2f",
+      "elf_class": 32,
+      "machine": "ARM",
+      "flags": "0x5000200",
+      "float_abi": "soft",
+      "dynamic_section_present": false,
+      "symbol_table_present": false
+    },
+    {
+      "path": "weread/bin/kindlepw2/device-info",
+      "bytes": 40680,
+      "sha256": "59474102e9bc4e3f988bc7bb2d85ac0ece96d95c1ade7726eb3ec6292a05c4fc",
+      "elf_class": 32,
+      "machine": "ARM",
+      "flags": "0x5000200",
+      "float_abi": "soft",
+      "dynamic_section_present": false,
+      "symbol_table_present": false
+    },
+    {
+      "path": "weread/bin/kindlepw2/fsr-session",
+      "bytes": 52648,
+      "sha256": "ef8beaba34e7050258470d9bbcd0a06332736ef892cf578c204227492147223b",
+      "elf_class": 32,
+      "machine": "ARM",
+      "flags": "0x5000200",
+      "float_abi": "soft",
+      "dynamic_section_present": false,
+      "symbol_table_present": false
+    },
+    {
+      "path": "weread/bin/kindlepw2/framework-session",
+      "bytes": 66800,
+      "sha256": "b84626de023508ae698f45344418d18212591bed4c3c009eb090cc51b7ae4c80",
+      "elf_class": 32,
+      "machine": "ARM",
+      "flags": "0x5000200",
+      "float_abi": "soft",
+      "dynamic_section_present": false,
+      "symbol_table_present": false
+    },
+    {
+      "path": "weread/bin/kindlepw2/screen-refresh",
+      "bytes": 54100,
+      "sha256": "618a0516fa5f750cc8d06ce891878b9c6d13c82326542d4b10a00073738d228e",
+      "elf_class": 32,
+      "machine": "ARM",
+      "flags": "0x5000200",
+      "float_abi": "soft",
+      "dynamic_section_present": false,
+      "symbol_table_present": false
+    },
+    {
+      "path": "weread/bin/kindlehf/script-runtime",
+      "bytes": 2999788,
+      "sha256": "120f7cfec2094fb58dd08ea83c48b23e45401e93ee38098eb9b335f784d4dcee",
+      "elf_class": 32,
+      "machine": "ARM",
+      "flags": "0x5000400",
+      "float_abi": "hard",
+      "dynamic_section_present": false,
+      "symbol_table_present": false
+    },
+    {
+      "path": "weread/bin/kindlehf/fb-session",
+      "bytes": 45676,
+      "sha256": "b85541a017be5db22f5147f76d6af4b05291331568e7c0c273938426bac16e07",
+      "elf_class": 32,
+      "machine": "ARM",
+      "flags": "0x5000400",
+      "float_abi": "hard",
+      "dynamic_section_present": false,
+      "symbol_table_present": false
+    },
+    {
+      "path": "weread/bin/kindlehf/weread_ui",
+      "bytes": 8274196,
+      "sha256": "f1c93affbbd62097a4a5a7c8e215022255c4298dbc959674f2c3f9c1ff9970b2",
+      "elf_class": 32,
+      "machine": "ARM",
+      "flags": "0x5000400",
+      "float_abi": "hard",
+      "dynamic_section_present": false,
+      "symbol_table_present": false
+    },
+    {
+      "path": "weread/bin/kindlehf/device-info",
+      "bytes": 35180,
+      "sha256": "7d1c1ad6dd0ec9d5980db4ad8f6c96fdfb027f00a565b628ab18f98dd4aa2791",
+      "elf_class": 32,
+      "machine": "ARM",
+      "flags": "0x5000400",
+      "float_abi": "hard",
+      "dynamic_section_present": false,
+      "symbol_table_present": false
+    },
+    {
+      "path": "weread/bin/kindlehf/fsr-session",
+      "bytes": 43884,
+      "sha256": "80d3efe5e011995d18c236a2ca8c94b717896479b5140c0cca654df026808c74",
+      "elf_class": 32,
+      "machine": "ARM",
+      "flags": "0x5000400",
+      "float_abi": "hard",
+      "dynamic_section_present": false,
+      "symbol_table_present": false
+    },
+    {
+      "path": "weread/bin/kindlehf/framework-session",
+      "bytes": 58068,
+      "sha256": "e07a590b1f58f64def2ff2b6bc3826a0c67dbe093cb92b9c5519c88320fc3f3b",
+      "elf_class": 32,
+      "machine": "ARM",
+      "flags": "0x5000400",
+      "float_abi": "hard",
+      "dynamic_section_present": false,
+      "symbol_table_present": false
+    },
+    {
+      "path": "weread/bin/kindlehf/screen-refresh",
+      "bytes": 48696,
+      "sha256": "1d02cb5ad86d8df49aa9af0a968e9533b327aebb54023a2be74cef6ec0c516d8",
+      "elf_class": 32,
+      "machine": "ARM",
+      "flags": "0x5000400",
+      "float_abi": "hard",
+      "dynamic_section_present": false,
+      "symbol_table_present": false
+    }
+  ],
+  "selected_utf8_strings": [
+    {
+      "binary": "weread/bin/kindlehf/weread_ui",
+      "offset": "0x42a68",
+      "text": "原字体不可用，已使用默认字体",
+      "reachable_ui_verified": false
+    },
+    {
+      "binary": "weread/bin/kindlehf/weread_ui",
+      "offset": "0x4329d",
+      "text": "译文尚未准备完成",
+      "reachable_ui_verified": false
+    },
+    {
+      "binary": "weread/bin/kindlehf/weread_ui",
+      "offset": "0x96ba8",
+      "text": "此处暂不支持精确同步",
+      "reachable_ui_verified": false
+    },
+    {
+      "binary": "weread/bin/kindlehf/weread_ui",
+      "offset": "0x25a100",
+      "text": "本周阅读统计暂未接入",
+      "reachable_ui_verified": false
+    }
+  ],
+  "repacked": {
+    "path": "dist/weread-inspection/weread-0.3.6-rc.4-font-reduced-utf8.zip",
+    "bytes": 15951122,
+    "sha256": "085b6191f443410aff4766bdd3567b72d67fbd04057cc75c03a5f0be91381241",
+    "payload_files": 42,
+    "payload_bytes_unchanged": true,
+    "utf8_paths_corrected": [
+      "更新说明.md",
+      "安装说明.md",
+      "documents/微信读书兼容性检查.sh",
+      "documents/微信读书恢复.sh",
+      "documents/微信读书.sh"
+    ],
+    "macos_metadata_files_removed": 44,
+    "outer_directory_removed": true,
+    "font_restored": false,
+    "core_features_modified": false
+  },
+  "files": [
+    {
+      "path": "更新说明.md",
+      "bytes": 12392,
+      "sha256": "374620fdf89a4c4648fbc31626b374964bfd9272984772babbe45d8bf1ba28e5"
+    },
+    {
+      "path": "安装说明.md",
+      "bytes": 4795,
+      "sha256": "b5b8c0aa9d3781d8a3552aebb4d5313843fbadb904b8abee0d000556001aea97"
+    },
+    {
+      "path": "documents/微信读书兼容性检查.sh",
+      "bytes": 113,
+      "sha256": "b17d52804c5ef2d23338925bb913078b82381e98b3b7ea113a0ba6a0855ccada"
+    },
+    {
+      "path": "documents/微信读书恢复.sh",
+      "bytes": 146,
+      "sha256": "2d1ac84fccaef4ba4fb11251eebda42f89cb30f46f18f6576108ceab1e10563c"
+    },
+    {
+      "path": "documents/微信读书.sh",
+      "bytes": 192,
+      "sha256": "9d7da9495e981d3b82cc5fcef3c230f2f5629466314b21e7cc6672e4cc70d99d"
+    },
+    {
+      "path": "fonts/AlibabaPuHuiTi-3-55-Regular.ttf",
+      "bytes": 8532824,
+      "sha256": "be33bc8d45ced30fa5c542f6f056565baf85003d4e079522110d76016f8a04e2"
+    },
+    {
+      "path": "weread/.DS_Store",
+      "bytes": 6148,
+      "sha256": "f09309f5047e8f49f731afb9bf69606cbe0e7544b8ef157f520984742edc33fd"
+    },
+    {
+      "path": "weread/diagnose.sh",
+      "bytes": 338,
+      "sha256": "03a938a8ce53d4b89ff6a5c429264603d838416d309e62536cb931babf00a2b8"
+    },
+    {
+      "path": "weread/recover.sh",
+      "bytes": 338,
+      "sha256": "bbab8c65d2ef0ea1f07a4d153f28276c70ad797d0083ec319447def1ba0c1e60"
+    },
+    {
+      "path": "weread/restore-book-cover-v1.png",
+      "bytes": 21404,
+      "sha256": "72c1db6c4ec16ee1800a784fc3170f918746547322422d02c971fde7d68fdcbd"
+    },
+    {
+      "path": "weread/reader-book-cover-v1.png",
+      "bytes": 25471,
+      "sha256": "b9cbadb3ef793714fc0aaa9d63db975ac6aeccccbda2bec9a7b3abcdc3071b0b"
+    },
+    {
+      "path": "weread/book-cover.png",
+      "bytes": 25471,
+      "sha256": "b9cbadb3ef793714fc0aaa9d63db975ac6aeccccbda2bec9a7b3abcdc3071b0b"
+    },
+    {
+      "path": "weread/start.sh",
+      "bytes": 338,
+      "sha256": "9e343ab3ea117d3abb25464c13de74596ea9440d38c9b85649b5a6c20f17a994"
+    },
+    {
+      "path": "extensions/weread/config.xml",
+      "bytes": 222,
+      "sha256": "3e8e65d75d7f6a63e7968d24927e6ca5fd003d9363b7cbb9acec4b7a785c8bf8"
+    },
+    {
+      "path": "extensions/weread/menu.json",
+      "bytes": 566,
+      "sha256": "76be964203abb25330319a0d44c5b1a5f8a874d30f18ae9050211590477b7762"
+    },
+    {
+      "path": "weread/bin/launcher-handoff.sh",
+      "bytes": 338,
+      "sha256": "f870e947727baadfef787cc4dd4de6fcacf539edb311cfc5ee9b3751c501200d"
+    },
+    {
+      "path": "weread/bin/usb-state.sh",
+      "bytes": 338,
+      "sha256": "d6050d165dc927025c45a6d47b115a02b97fdc906995a6c2f35c8378ba60b63d"
+    },
+    {
+      "path": "weread/bin/portable-power-session.sh",
+      "bytes": 338,
+      "sha256": "d4c6cda0c93c3d06346c632a1829ccf9f096fdcf60498dbcc597a87b862d28a0"
+    },
+    {
+      "path": "weread/bin/power-ready.lua",
+      "bytes": 55,
+      "sha256": "ce6df66762b7d894a15a8fdf3333ff1f1fbf83225fd9ec8ccc5a14051b1f765f"
+    },
+    {
+      "path": "weread/bin/launch-window.lua",
+      "bytes": 55,
+      "sha256": "ce6df66762b7d894a15a8fdf3333ff1f1fbf83225fd9ec8ccc5a14051b1f765f"
+    },
+    {
+      "path": "weread/bin/kindle-session.sh",
+      "bytes": 338,
+      "sha256": "330dbd33105fd349f770f1de48901cfd0c0e8211ff8091431243b40db5675996"
+    },
+    {
+      "path": "weread/bin/portable-session.sh",
+      "bytes": 338,
+      "sha256": "d96ae226c7e790a566286d6a7dadd3947a48f7c9efd3fa17d37887002c872db3"
+    },
+    {
+      "path": "weread/bin/launch-window.sh",
+      "bytes": 338,
+      "sha256": "38f55906499cb6ab4c33652ca74b6e922b65ffb6cec5f6b7c21de6f50c2a9968"
+    },
+    {
+      "path": "weread/bin/power-session.sh",
+      "bytes": 338,
+      "sha256": "d4291e5b0395f68a0526099d625bcf8246bb600850a8ff6cff54a13228866ac4"
+    },
+    {
+      "path": "weread/entry/starting-v2.js",
+      "bytes": 2891,
+      "sha256": "0730acce685446dd0f529587a5ef5328707f261794fb550db10bfae09742a74e"
+    },
+    {
+      "path": "weread/entry/starting-v2.html",
+      "bytes": 1656,
+      "sha256": "10dd1e572055ef66fb66b0eca58d164918989b8e60559333aa85addbd5ff17bd"
+    },
+    {
+      "path": "weread/entry/assets.sha256",
+      "bytes": 248,
+      "sha256": "287154a0f675c60c2c12212c3b609951ba1df310c64decdb77455b09e4bb7b2d"
+    },
+    {
+      "path": "weread/entry/starting-logo.png",
+      "bytes": 3303,
+      "sha256": "2ca38eb2bbbe088908e5a9f0254ad02c595cd0179866539948ad157745b9772e"
+    },
+    {
+      "path": "weread/certs/ca-bundle.pem",
+      "bytes": 188900,
+      "sha256": "a41b5d356aea97a529fe27e0f7316d2f9d946d75927476cf9cf1b90637d00505"
+    },
+    {
+      "path": "weread/bin/kindlepw2/script-runtime",
+      "bytes": 2983960,
+      "sha256": "8948d78e7638f9494cb283a98ee0063a96fc502a62e4e8ec6163201feb796f2c"
+    },
+    {
+      "path": "weread/bin/kindlepw2/fb-session",
+      "bytes": 54672,
+      "sha256": "b937211e7c4234b661c309d89e9a153c4b3cef2fe1f8e6b21399e5e292e2dd86"
+    },
+    {
+      "path": "weread/bin/kindlepw2/weread_ui",
+      "bytes": 8172256,
+      "sha256": "2ecfd8f7add8aaecc5c537169ace245f75da1c3c5e817cec5f70fdbb50f60e2f"
+    },
+    {
+      "path": "weread/bin/kindlepw2/device-info",
+      "bytes": 40680,
+      "sha256": "59474102e9bc4e3f988bc7bb2d85ac0ece96d95c1ade7726eb3ec6292a05c4fc"
+    },
+    {
+      "path": "weread/bin/kindlepw2/fsr-session",
+      "bytes": 52648,
+      "sha256": "ef8beaba34e7050258470d9bbcd0a06332736ef892cf578c204227492147223b"
+    },
+    {
+      "path": "weread/bin/kindlepw2/framework-session",
+      "bytes": 66800,
+      "sha256": "b84626de023508ae698f45344418d18212591bed4c3c009eb090cc51b7ae4c80"
+    },
+    {
+      "path": "weread/bin/kindlepw2/screen-refresh",
+      "bytes": 54100,
+      "sha256": "618a0516fa5f750cc8d06ce891878b9c6d13c82326542d4b10a00073738d228e"
+    },
+    {
+      "path": "weread/bin/kindlehf/script-runtime",
+      "bytes": 2999788,
+      "sha256": "120f7cfec2094fb58dd08ea83c48b23e45401e93ee38098eb9b335f784d4dcee"
+    },
+    {
+      "path": "weread/bin/kindlehf/fb-session",
+      "bytes": 45676,
+      "sha256": "b85541a017be5db22f5147f76d6af4b05291331568e7c0c273938426bac16e07"
+    },
+    {
+      "path": "weread/bin/kindlehf/weread_ui",
+      "bytes": 8274196,
+      "sha256": "f1c93affbbd62097a4a5a7c8e215022255c4298dbc959674f2c3f9c1ff9970b2"
+    },
+    {
+      "path": "weread/bin/kindlehf/device-info",
+      "bytes": 35180,
+      "sha256": "7d1c1ad6dd0ec9d5980db4ad8f6c96fdfb027f00a565b628ab18f98dd4aa2791"
+    },
+    {
+      "path": "weread/bin/kindlehf/fsr-session",
+      "bytes": 43884,
+      "sha256": "80d3efe5e011995d18c236a2ca8c94b717896479b5140c0cca654df026808c74"
+    },
+    {
+      "path": "weread/bin/kindlehf/framework-session",
+      "bytes": 58068,
+      "sha256": "e07a590b1f58f64def2ff2b6bc3826a0c67dbe093cb92b9c5519c88320fc3f3b"
+    },
+    {
+      "path": "weread/bin/kindlehf/screen-refresh",
+      "bytes": 48696,
+      "sha256": "1d02cb5ad86d8df49aa9af0a968e9533b327aebb54023a2be74cef6ec0c516d8"
+    }
+  ]
+}
