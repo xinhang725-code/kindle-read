@@ -1,0 +1,26 @@
+{
+  "items": [
+    {
+      "items": [
+        {
+          "action": "sh /mnt/us/weread/start.sh",
+          "exitmenu": false,
+          "name": "启动微信读书",
+          "status": false
+        },
+        {
+          "action": "sh /mnt/us/weread/diagnose.sh",
+          "name": "生成兼容报告（只读）"
+        },
+        {
+          "action": "sh /mnt/us/weread/recover.sh",
+          "exitmenu": true,
+          "name": "恢复启动状态",
+          "status": false
+        }
+      ],
+      "name": "微信读书",
+      "priority": 0
+    }
+  ]
+}

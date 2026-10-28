@@ -1,0 +1,1 @@
+-- Protected Lua resource; executed by script-runtime.

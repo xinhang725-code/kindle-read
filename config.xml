@@ -1,0 +1,1 @@
+<?xml version="1.0"?><extension><information><name>WeRead</name><version>0.3.6-rc.4</version><author>WeRead</author><id>weread</id></information><menus><menu type="json" dynamic="true">menu.json</menu></menus></extension>

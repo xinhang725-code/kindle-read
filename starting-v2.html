@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+<script>
+/* Independent of external scripts: a failed ready handshake must self-close. */
+(function () {
+  var until = Date.now() + 45000;
+  function check() {
+    if (window.WRStartingActive) return;
+    try {
+      var token = nativeBridge.getStringLipcProperty('com.isword.weread.launch', 'token');
+      var phase = nativeBridge.getStringLipcProperty('com.isword.weread.launch', 'phase');
+      if (!/^[0-9a-f]{32}$/.test(token) || phase !== token + ':waiting' || Date.now() >= until) {
+        nativeBridge.dismissMe(); return;
+      }
+    } catch (error) { nativeBridge.dismissMe(); return; }
+    setTimeout(check, 150);
+  }
+  setTimeout(check, 150);
+}());
+</script>
+<script src="file:///usr/share/webkit-1.0/pillow/javascripts/local_debug.js"></script>
+<script src="file:///usr/share/webkit-1.0/pillow/javascripts/constants.js"></script>
+<script src="file:///usr/share/webkit-1.0/pillow/javascripts/pillow.js"></script>
+<script src="file:///usr/share/webkit-1.0/pillow/javascripts/window_title.js"></script>
+<style>
+html,body{margin:0;padding:0;width:100%;height:100%;background:#fff;color:#000;overflow:hidden}
+body{font-family:sans-serif;text-align:center}
+#logo{position:absolute;left:39.74%;top:42.4%;width:20.52%;height:auto}
+#message{position:absolute;left:0;top:61.4%;width:100%;font-size:28px;line-height:1.4}
+</style><title>微信读书</title></head><body>
+<img id="logo" src="starting-logo.png" alt=""/><div id="message">进入中</div>
+<script src="starting-v2.js"></script></body></html>
